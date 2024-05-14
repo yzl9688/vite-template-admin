@@ -1,0 +1,2 @@
+bun pretty-quick --pattern "**/*.*(js|jsx|ts|tsx)" --staged
+

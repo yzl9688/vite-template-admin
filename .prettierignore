@@ -1,0 +1,8 @@
+# Ignore artifacts
+
+build
+public
+
+**/.git
+**/node_modules
+
