@@ -1,46 +1,97 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Input, FormProps, Form, message } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useGlobalStore } from "../stores";
+import FullScreenBg from "../assets/full-screen-bg.jpeg";
+import { motion } from "framer-motion";
 
-const LeftBg = styled.div`
-  content: "";
+const BgContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${FullScreenBg});
+  background-size: cover;
+  background-position: 50%;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.33;
+    background: #000;
+    z-index: 2;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #292929 0, #0e0e0e);
+    background-size: 150% 150%;
+    z-index: 3;
+    opacity: 0.55;
+  }
+`;
+
+const LoginCard = styled.div`
+  width: 300px;
+  box-shadow: 0 25px 30px -13px rgba(40, 40, 40, 0.4);
+  border-radius: 10px;
+  padding: 30px 15px;
+  background: #fff;
+  margin: 0 auto;
+  margin-top: 300px;
+  position: relative;
+  z-index: 9;
+`;
+
+const TopTitle = styled.h1`
+  color: #fff;
+  font-size: 18px;
+  font-weight: 400;
   position: absolute;
-  height: 2000px;
-  width: 2000px;
-  top: -10%;
-  right: 48%;
-  transform: translateY(-50%);
-  background-image: linear-gradient(-45deg, #4481eb 0, #04befe 100%);
-  transition: 1.8s ease-in-out;
-  border-radius: 50%;
-  z-index: 6;
+  left: 100px;
+  top: 30px;
+  z-index: 9;
 `;
 
 const Title = styled.h1`
-  font-size: 2.2rem;
-  color: #444;
-  margin-bottom: 40px;
+  font-size: 28px;
+  color: #333;
+  font-weight: 300;
   text-align: center;
+  margin-bottom: 20px;
+`;
+
+const FormWrapper = styled(Form)`
+  .ant-form-item {
+    width: 100%;
+
+    &-label {
+      padding-bottom: 5px;
+      label {
+        color: #9a9a9a;
+      }
+    }
+  }
 `;
 
 const inputStyle = `
-  height: 55px;
-  width: 380px;
-  background-color: #f0f0f0!important;
-  border-radius: 55px;
+  width: 100% !important;
+  background-color: #fff!important;
+  border-radius: 4px;
   font-size: 18px;
-  padding-left: 20px;
-
-  span {
-    margin-right: 10px;
-    color: #acacac;
-  }
+  border: 1px solid #e3e3e3;
 
   &:focus-within, &:hover {
-    background-color: #f0f0f0;
+    background-color: #fff;
   }
 `;
 
@@ -53,25 +104,21 @@ const LargeInputPas = styled(Input.Password)`
 `;
 
 const LoginBtn = styled(Button)`
+  min-width: 180px;
   display: block;
-  width: 150px;
-  height: 50px;
-  border-radius: 50px;
-  background-color: #5995fd;
+  border-radius: 30px;
+  background-color: #23ccef !important;
   color: #fff;
-  font-size: 18px;
+  font-size: 14px;
+  line-height: 14px;
+  padding: 8px 16px;
 `;
-
-interface FieldType {
-  username?: string;
-  password?: string;
-}
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const setToken = useGlobalStore((state) => state.setToken);
 
-  const handleSubmit: FormProps<FieldType>["onFinish"] = (values) => {
+  const handleSubmit: FormProps["onFinish"] = (values) => {
     console.log(values);
     message.success("登录成功");
 
@@ -81,27 +128,50 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full relative">
-      <LeftBg />
-      <div className="pt-[300px] w-[50%] float-right">
-        <Title>Welcome</Title>
-        <Form onFinish={handleSubmit} className="flex flex-col items-center">
-          <Form.Item
-            name="username"
-            rules={[{ required: true, message: "用户名不能为空" }]}>
-            <LargeInput placeholder="用户名" prefix={<UserOutlined />} />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "密码不能为空" }]}>
-            <LargeInputPas placeholder="密码" prefix={<LockOutlined />} />
-          </Form.Item>
-          <LoginBtn type="primary" htmlType="submit">
-            登录
-          </LoginBtn>
-        </Form>
-      </div>
-    </div>
+    <BgContainer>
+      <TopTitle>Vite template admin</TopTitle>
+      <motion.div
+        className="relative z-10"
+        transition={{
+          ease: "linear",
+          duration: 0.2,
+        }}
+        initial={{
+          translateY: "-150px",
+          opacity: 0,
+        }}
+        animate={{
+          translateY: "0px",
+          opacity: 1,
+        }}>
+        <LoginCard>
+          <Title>Login</Title>
+
+          <FormWrapper
+            onFinish={handleSubmit}
+            layout="vertical"
+            className="flex flex-col items-center">
+            <Form.Item
+              name="username"
+              label="用户名"
+              required={false}
+              rules={[{ required: true, message: "用户名不能为空" }]}>
+              <LargeInput />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="密码"
+              required={false}
+              rules={[{ required: true, message: "密码不能为空" }]}>
+              <LargeInputPas />
+            </Form.Item>
+            <LoginBtn type="primary" htmlType="submit">
+              登录
+            </LoginBtn>
+          </FormWrapper>
+        </LoginCard>
+      </motion.div>
+    </BgContainer>
   );
 };
 
