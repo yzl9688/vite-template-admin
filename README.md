@@ -1,7 +1,30 @@
-# 功能
 
-- [] 支持本地和远程配置路由菜单。
-- [x] 菜单激活状态和地址栏相对应。
-- [] 支持角色权限和按钮权限。
-- [] 可控制的菜单布局。
+## 安装使用
+
+- 获取项目代码
+
+```bash
+git clone https://github.com/yzl9688/vite-template-admin.git
+```
+
+- 安装依赖
+
+```bash
+cd vite-template-admin
+
+bun install
+
+```
+
+- 运行
+
+```bash
+bun serve
+```
+
+- 打包
+
+```bash
+bun build
+```
 
