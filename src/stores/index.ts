@@ -20,6 +20,10 @@ interface State {
    * 当前页面的按钮权限
    */
   btnPermissions: string[];
+  /**
+   * 菜单是否收起
+   */
+  menuCollapsed: boolean;
 }
 
 interface Actions {
@@ -27,9 +31,10 @@ interface Actions {
   setRole: (role: string) => void;
   setMenus: (menus: IMenu[]) => void;
   setBtnPermissions: (permissions: string[]) => void;
+  setMenuCollapsed: (collapsed: boolean) => void;
 }
 
-const initialState: State = {
+const initialState = {
   token: "",
   role: null,
   menus: [],
@@ -40,6 +45,7 @@ export const useGlobalStore = create<State & Actions>()(
   persist(
     immer((set) => ({
       ...initialState,
+      menuCollapsed: false,
       setToken: (token) =>
         set((state) => {
           state.token = token;
@@ -55,6 +61,10 @@ export const useGlobalStore = create<State & Actions>()(
       setBtnPermissions: (permissions) =>
         set((state) => {
           state.btnPermissions = permissions;
+        }),
+      setMenuCollapsed: (collapsed) =>
+        set((state) => {
+          state.menuCollapsed = collapsed;
         }),
       reset: () => set(initialState),
     })),
