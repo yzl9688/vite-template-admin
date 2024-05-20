@@ -1,17 +1,17 @@
 import { SettingOutlined } from "@ant-design/icons";
 import { MenuModeImg, SettingBtn } from "./ThemeSetting.styled";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Divider, Drawer, Tooltip } from "antd";
 import { MenuMode, useThemeSetting } from "@/stores/theme";
 
+type ModeItem = { label: string; value: MenuMode };
+
 const ThemeSetting: React.FC = () => {
   const [visible, setVisible] = useState(false);
-  const [menuMode, setMenuMode] = useThemeSetting((state) => [
-    state.menuMode,
-    state.setMenuMode,
-  ]);
+  const menuMode = useThemeSetting((state) => state.menuMode);
+  const setMenuMode = useThemeSetting((state) => state.setMenuMode);
 
-  const modeList: { label: string; value: MenuMode }[] = [
+  const modeList: ModeItem[] = [
     { label: "顶部菜单模式", value: "top" },
     { label: "左侧菜单模式", value: "left" },
     { label: "顶部左侧菜单联动模式", value: "topLeft" },
@@ -31,9 +31,7 @@ const ThemeSetting: React.FC = () => {
               <MenuModeImg
                 mode={item.value}
                 selected={menuMode == item.value}
-                onClick={() => {
-                  setMenuMode(item.value);
-                }}
+                onClick={() => setMenuMode(item.value)}
               />
             </Tooltip>
           ))}
@@ -43,4 +41,4 @@ const ThemeSetting: React.FC = () => {
   );
 };
 
-export default ThemeSetting;
+export default memo(ThemeSetting);

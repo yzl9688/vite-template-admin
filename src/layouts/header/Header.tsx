@@ -2,49 +2,62 @@ import { useGlobalStore } from "@/stores";
 import { useThemeSetting } from "@/stores/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, MenuProps } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Actions from "./Actions";
 import { MenuItem } from "@/pages/App";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useMemo } from "react";
 
-const Header: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
-  console.log("header rendered");
-  const [menuCollapsed, setMenuCollapsed] = useGlobalStore((state) => [
-    state.menuCollapsed,
-    state.setMenuCollapsed,
-  ]);
-  const [_menus, setMenus] = useState<MenuItem[]>([]);
+const findTargetMenu: (
+  path: string,
+  menus: MenuItem[],
+) => MenuItem | undefined = (path, menus) => {
+  const targetMenu = menus.find((item) => item.key == path);
+
+  const findChildMenu: (menus: MenuItem[]) => MenuItem = (menus) => {
+    return menus[0].children?.length
+      ? findChildMenu(menus[0].children)
+      : menus[0];
+  };
+
+  if (targetMenu && targetMenu.children?.length) {
+    return findChildMenu(targetMenu.children);
+  }
+
+  return targetMenu;
+};
+
+const Header: React.FC<{ menus: MenuItem[]; firstMenu?: MenuItem }> = ({
+  menus,
+  firstMenu,
+}) => {
+  const menuCollapsed = useGlobalStore((state) => state.menuCollapsed);
+  const setMenuCollapsed = useGlobalStore((state) => state.setMenuCollapsed);
   const menuMode = useThemeSetting((state) => state.menuMode);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  useEffect(() => {
-    const path = location.pathname;
-    const topMenu = menus.find(
-      (item) =>
-        path.indexOf(item?.key) == 0 &&
-        ["/", undefined].includes(path[item.key.length]),
-    );
+  const handleMenuCollapseToggle = useCallback(() => {
+    setMenuCollapsed(!menuCollapsed);
+  }, [menuCollapsed]);
 
-    if (topMenu) {
-      setSelectedKeys([topMenu.key]);
-    } else {
-      setSelectedKeys([]);
-    }
-  }, [location, menus]);
+  const selectedKeys = useMemo(() => {
+    return firstMenu ? [firstMenu.key] : [];
+  }, [firstMenu]);
 
-  useEffect(() => {
+  const filteredMenus = useMemo(() => {
     if (menuMode == "topLeft") {
-      setMenus(menus.map((item) => ({ ...item, children: undefined })));
-    } else {
-      setMenus(menus);
+      return menus.map((item) => ({ ...item, children: undefined }));
     }
+    return menus;
   }, [menus, menuMode]);
 
-  const handleClick: MenuProps["onClick"] = (e) => {
-    navigate(e.key);
-  };
+  const handleClick = useCallback<Required<MenuProps>["onClick"]>(
+    (e) => {
+      if (menuMode == "top") return navigate(e.key);
+      const targetMenu = findTargetMenu(e.key, menus);
+      navigate(targetMenu?.key || "");
+    },
+    [navigate, menuMode],
+  );
 
   return (
     <Layout.Header className="bg-white p-0 flex items-center shadow-[0_2px_4px_#9999991f] z-10">
@@ -66,7 +79,7 @@ const Header: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
         <Button
           type="text"
           icon={menuCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          onClick={() => setMenuCollapsed(!menuCollapsed)}
+          onClick={handleMenuCollapseToggle}
           className="text-[16px] !w-[64px] h-[64px]"
         />
       )}
@@ -75,7 +88,7 @@ const Header: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
           <Menu
             mode="horizontal"
             theme="light"
-            items={_menus}
+            items={filteredMenus}
             selectedKeys={selectedKeys}
             onClick={handleClick}
           />

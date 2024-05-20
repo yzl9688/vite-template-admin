@@ -2,11 +2,11 @@ import { MenuItem } from "@/pages/App";
 import { useGlobalStore } from "@/stores";
 import { useThemeSetting } from "@/stores/theme";
 import { Layout, Menu, MenuProps } from "antd";
-import { isArray } from "lodash";
-import { useState, useEffect } from "react";
+import { isArray, uniq } from "lodash";
+import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-// 获取当前菜单的父级菜单
+// 获取当前菜单的父级菜单的key
 const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (
   path,
   menus,
@@ -25,57 +25,64 @@ const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (
   return [];
 };
 
-export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
-  const [menuCollapsed, setMenuCollapsed] = useGlobalStore((state) => [
-    state.menuCollapsed,
-    state.setMenuCollapsed,
-  ]);
+export const Sider: React.FC<{ menus: MenuItem[]; firstMenu?: MenuItem }> = ({
+  menus,
+  firstMenu,
+}) => {
+  console.log("sider render");
+  const menuCollapsed = useGlobalStore((state) => state.menuCollapsed);
+  const setMenuCollapsed = useGlobalStore((state) => state.setMenuCollapsed);
   const menuMode = useThemeSetting((state) => state.menuMode);
 
   const [openedKeys, setOpenedKeys] = useState<string[]>([]);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [_menus, setMenus] = useState<MenuItem[]>([]);
 
   const location = useLocation();
-
-  useEffect(() => {
-    const path = location.pathname;
-    const topMenu = menus.find(
-      (item) =>
-        path.indexOf(item?.key) == 0 &&
-        ["/", undefined].includes(path[item.key.length]),
-    );
-
-    if (topMenu) {
-      menuMode == "topLeft" && setMenus(topMenu.children as MenuItem[]);
-      menuMode == "left" && setMenus(menus);
-      setSelectedKeys([location.pathname]);
-
-      // 获取需要打开的菜单
-      const keys = findOpenedKeys(location.pathname, topMenu.children || []);
-      // 删除当前菜单的key
-      keys.pop();
-      setOpenedKeys([topMenu.key, ...keys] || []);
-    }
-  }, [location, menus]);
-
   const navigate = useNavigate();
 
-  const handleClick: MenuProps["onClick"] = (e) => {
-    navigate(e.key);
-  };
-  const handleOpenChange: MenuProps["onOpenChange"] = (openedKeys) => {
-    setOpenedKeys(openedKeys);
-  };
+  const handleMenuCollapseToggle = useCallback(() => {
+    setMenuCollapsed(!menuCollapsed);
+  }, [menuCollapsed]);
+
+  const _menus = useMemo(() => {
+    if (menuMode == "left") return menus;
+    else if (menuMode == "topLeft") {
+      return firstMenu ? firstMenu.children : [];
+    }
+    return [];
+  }, [firstMenu, menus]);
+
+  useEffect(() => {
+    if (firstMenu && !menuCollapsed) {
+      // 获取需要打开的菜单
+      const keys = findOpenedKeys(location.pathname, firstMenu.children || []);
+      // 删除当前菜单的key
+      keys.pop();
+      setOpenedKeys((prev) => uniq([...prev, firstMenu.key, ...keys]));
+    }
+  }, [menus, firstMenu]);
+
+  const handleClick = useCallback<Required<MenuProps>["onClick"]>(
+    (e) => {
+      navigate(e.key);
+    },
+    [navigate],
+  );
+
+  const handleOpenChange = useCallback<Required<MenuProps>["onOpenChange"]>(
+    (openedKeys) => {
+      setOpenedKeys(openedKeys);
+    },
+    [],
+  );
 
   if (!(_menus || []).length) return <></>;
 
   return (
     <Layout.Sider
       className="!bg-white h-full"
-      trigger={menuMode == "left" ? undefined : null}
+      trigger={menuMode == "topLeft" ? undefined : null}
       collapsible
-      onCollapse={(val) => setMenuCollapsed(val)}
+      onCollapse={handleMenuCollapseToggle}
       collapsed={menuCollapsed}>
       {menuMode == "left" && (
         <div
@@ -96,7 +103,7 @@ export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
         theme="dark"
         mode="inline"
         items={_menus}
-        selectedKeys={selectedKeys}
+        selectedKeys={[location.pathname]}
         openKeys={openedKeys}
         onClick={handleClick}
         onOpenChange={handleOpenChange}
@@ -105,4 +112,4 @@ export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
   );
 };
 
-export default Sider;
+export default memo(Sider);

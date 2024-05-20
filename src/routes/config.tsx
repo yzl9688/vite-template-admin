@@ -72,7 +72,7 @@ const menus: IMenu[] = [
   {
     path: "/app/form1",
     title: "表单组件1",
-    component: <div>form</div>,
+    component: <div>form1</div>,
   },
 ];
 

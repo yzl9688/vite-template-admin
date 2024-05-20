@@ -1,11 +1,10 @@
 import { useGlobalStore } from "@/stores";
-import { Layout, Menu, MenuProps } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Layout } from "antd";
+import React, { useMemo } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import menus from "@/routes/config";
 import { IMenu } from "@/types/menu";
 import { isArray } from "lodash";
-import { AnimatePresence, motion } from "framer-motion";
 import Header from "@/layouts/header/Header";
 import Sider from "@/layouts/sider/Sider";
 import { useThemeSetting } from "@/stores/theme";
@@ -34,29 +33,48 @@ const generateMenus: (menus: IMenu[]) => MenuItem[] = (menus) => {
     });
 };
 
+// 查找一级菜单
+const findFirstLevelMenu: (
+  path: string,
+  menus: MenuItem[],
+) => MenuItem | undefined = (path, menus) => {
+  const menu = menus.find(
+    (item) =>
+      path.indexOf(item?.key) == 0 &&
+      ["/", undefined].includes(path[item.key.length]),
+  );
+
+  return menu;
+};
+
 const App: React.FC = () => {
   const remoteMenus = useGlobalStore((state) => state.menus);
-  const [allMenus, setAllMenus] = useState<MenuItem[]>([]);
   const menuMode = useThemeSetting((state) => state.menuMode);
+  const location = useLocation();
 
-  useEffect(() => {
-    const _menus = generateMenus([...menus, ...remoteMenus]);
-
-    setAllMenus(_menus);
+  const allMenus = useMemo(() => {
+    return generateMenus([...menus, ...remoteMenus]);
   }, [remoteMenus]);
 
-  const Content = (
-    <Layout.Content className="m-[12px] bg-white rounded-s p-[12px]">
-      <Outlet />
-    </Layout.Content>
+  const firstMenu = useMemo(() => {
+    return findFirstLevelMenu(location.pathname, allMenus);
+  }, [location.pathname, allMenus]);
+
+  const Content = useMemo(
+    () => (
+      <Layout.Content className="m-[12px] bg-white rounded-s p-[12px]">
+        <Outlet />
+      </Layout.Content>
+    ),
+    [],
   );
 
   if (menuMode == "left") {
     return (
       <Layout className="h-full">
-        <Sider menus={allMenus} />
+        <Sider menus={allMenus} firstMenu={firstMenu} />
         <Layout>
-          <Header menus={allMenus} />
+          <Header menus={allMenus} firstMenu={firstMenu} />
           {Content}
         </Layout>
       </Layout>
@@ -65,9 +83,11 @@ const App: React.FC = () => {
 
   return (
     <Layout className="h-full">
-      <Header menus={allMenus} />
+      <Header menus={allMenus} firstMenu={firstMenu} />
       <Layout>
-        {menuMode == "topLeft" && <Sider menus={allMenus} />}
+        {menuMode == "topLeft" && (firstMenu?.children || []).length ? (
+          <Sider menus={allMenus} firstMenu={firstMenu} />
+        ) : null}
         {Content}
       </Layout>
     </Layout>

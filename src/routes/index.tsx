@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { IMenu } from "@/types/menu";
 import { isArray, isString } from "lodash";
@@ -6,13 +6,14 @@ import CompWrapper from "@/components/CompWrapper";
 import { useGlobalStore } from "@/stores";
 import menus from "./config";
 import NotAuth from "@/pages/NotAuth";
+import App from "@/pages/App";
 
 const ElementWrapper: React.FC<{
   title: string;
   roles?: string[];
   permissions?: string[];
   children: React.ReactNode;
-}> = ({ children, title, roles, permissions }) => {
+}> = React.memo(({ children, title, roles, permissions }) => {
   const role = useGlobalStore((state) => state.role);
   const setBtnPermissions = useGlobalStore((state) => state.setBtnPermissions);
   if ((roles || []).length && !roles?.includes(role || "")) {
@@ -28,7 +29,7 @@ const ElementWrapper: React.FC<{
   document.title = title;
 
   return <>{children}</>;
-};
+});
 
 // 创建渲染元素
 const createElement: (menu: IMenu) => React.ReactNode = (menu) => {
@@ -55,23 +56,27 @@ const createElement: (menu: IMenu) => React.ReactNode = (menu) => {
 
 // 创建路由
 const createRoute: (menu: IMenu) => React.ReactNode = (menu) => {
-  if (isArray(menu.children)) {
-    return (
-      <Route path={menu.path} key={menu.path}>
-        {/* 重写向到子级第一个路由 */}
-        <Route
-          index
-          element={
-            <Navigate
-              replace
-              to={menu.children[0].path}
-              key={menu.path + "redirect"}
-            />
-          }
-        />
-        {menu.children.map((item) => createRoute(item))}
-      </Route>
-    );
+  // 路由嵌套过深 多次重定向会导致 依赖location.pathname的钩子多次触发
+  // if (isArray(menu.children)) {
+  //   return (
+  //     <Route path={menu.path} key={menu.path}>
+  //       {/* 重写向到子级第一个路由 */}
+  //       <Route
+  //         index
+  //         element={
+  //           <Navigate
+  //             replace
+  //             to={menu.children[0].path}
+  //             key={menu.path + "redirect"}
+  //           />
+  //         }
+  //       />
+  //       {menu.children.map((item) => createRoute(item))}
+  //     </Route>
+  //   );
+  // }
+  if (menu.children?.length) {
+    return menu.children.map((item) => createRoute(item));
   }
 
   const element = createElement(menu);
@@ -96,11 +101,17 @@ const createRoute: (menu: IMenu) => React.ReactNode = (menu) => {
 const createRoutes: (menus: IMenu[]) => React.ReactNode[] = (menus) => {
   const routes = menus.map((item: IMenu) => createRoute(item));
 
+  const findChildMenu: (menus: IMenu[]) => IMenu = (menus) => {
+    return menus[0].children?.length
+      ? findChildMenu(menus[0].children)
+      : menus[0];
+  };
+
   menus.length &&
     routes.unshift(
       <Route
         index
-        element={<Navigate replace to={menus[0].path} />}
+        element={<Navigate replace to={findChildMenu(menus).path} />}
         key="redirect"
       />,
     );
@@ -130,16 +141,21 @@ const AuthWrapper: React.FC<{ to: string; children: React.ReactNode }> = ({
 const MenuRoutes: React.FC = () => {
   const remoteMenus = useGlobalStore((state) => state.menus);
 
+  const routes = useMemo(
+    () => createRoutes([...menus, ...remoteMenus]),
+    [remoteMenus],
+  );
+
   return (
     <Routes>
       <Route
         path="/"
         element={
           <AuthWrapper to="app">
-            <CompWrapper path="App" />
+            <App />
           </AuthWrapper>
         }>
-        {createRoutes([...menus, ...remoteMenus])}
+        {routes}
       </Route>
       <Route
         path="/login"

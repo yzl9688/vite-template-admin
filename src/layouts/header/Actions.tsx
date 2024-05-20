@@ -1,4 +1,5 @@
 import ThemeSetting from "@/components/setting/ThemeSetting";
+import { memo } from "react";
 
 const Actions: React.FC = () => {
   return (
@@ -8,4 +9,4 @@ const Actions: React.FC = () => {
   );
 };
 
-export default Actions;
+export default memo(Actions);
