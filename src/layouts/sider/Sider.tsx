@@ -29,7 +29,6 @@ export const Sider: React.FC<{ menus: MenuItem[]; firstMenu?: MenuItem }> = ({
   menus,
   firstMenu,
 }) => {
-  console.log("sider render");
   const menuCollapsed = useGlobalStore((state) => state.menuCollapsed);
   const setMenuCollapsed = useGlobalStore((state) => state.setMenuCollapsed);
   const menuMode = useThemeSetting((state) => state.menuMode);

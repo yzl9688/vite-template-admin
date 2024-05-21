@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { IMenu } from "@/types/menu";
-import { isArray, isString } from "lodash";
+import { isString } from "lodash";
 import CompWrapper from "@/components/CompWrapper";
 import { useGlobalStore } from "@/stores";
 import menus from "./config";
