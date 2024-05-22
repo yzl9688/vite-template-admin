@@ -12,8 +12,8 @@ async function enableMocking() {
     onUnhandledRequest: (request, print) => {
       const url = new URL(request.url);
 
-      const extensions = [".tsx", ".svg", ".png", ".jpeg", "jpg", ".css"];
-      if (extensions.some((extension) => url.pathname.endsWith(extension))) {
+      // 非接口请求不打印警告
+      if (!url.href.includes(import.meta.env.VITE_BASE_URL)) {
         return;
       }
 
