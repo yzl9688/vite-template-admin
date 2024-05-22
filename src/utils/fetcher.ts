@@ -1,21 +1,27 @@
-import { isObject } from "lodash";
+import { isString } from "lodash";
 
-export const fetcher: (args: {
-  url: string;
-  method?: string;
-  params?: object;
-  headers?: object;
-}) => Promise<any> = async (args) => {
+export const fetcher: (
+  args:
+    | string
+    | {
+        url: string;
+        method?: string;
+        params?: object;
+        headers?: object;
+      },
+) => Promise<any> = async (args) => {
   let url,
     method = "GET",
     params = {},
     headers = {};
 
-  if (isObject(args)) {
+  if (isString(args)) {
+    url = args;
+  } else {
     url = args.url;
     method = args.method || "GET";
     params = args.params || {};
-    headers = args.headers || {};
+    headers = args?.headers || {};
   }
 
   const res = await fetch(import.meta.env.VITE_BASE_URL + url, {

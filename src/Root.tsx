@@ -34,7 +34,6 @@ const Root: React.FC = () => {
             );
           },
           onError: (err) => {
-            err && console.error(err);
             err?.info?.message && messageApi.error(err.info?.message);
           },
           use: [auth],

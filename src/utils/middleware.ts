@@ -17,7 +17,7 @@ export const auth: Middleware = (useSWRNext) => {
 
     // 扩展fetcher
     const extendedFetcher = useCallback(
-      (args: string | Omit<RequestParams, "headers">) => {
+      (args: string | Omit<RequestParams, "headers">, { arg }: any) => {
         const params: RequestParams = {
           url: "",
         };
@@ -25,6 +25,10 @@ export const auth: Middleware = (useSWRNext) => {
           params.url = args;
         } else {
           Object.assign(params, args);
+        }
+
+        if (arg) {
+          params.params = arg;
         }
 
         const headers = new Headers();
