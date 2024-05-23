@@ -1,4 +1,4 @@
-import { IMenu } from "@/types/menu";
+import { UserInfo, IMenu } from "@/types";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -9,9 +9,9 @@ interface State {
    */
   token: string;
   /**
-   * 当前账号的角色
+   * 用户信息
    */
-  role: string | null;
+  userInfo?: UserInfo | null;
   /**
    * 路由菜单表
    */
@@ -28,15 +28,16 @@ interface State {
 
 interface Actions {
   setToken: (token: string) => void;
-  setRole: (role: string) => void;
+  setUserInfo: (userInfo: UserInfo | null) => void;
   setMenus: (menus: IMenu[]) => void;
   setBtnPermissions: (permissions: string[]) => void;
   setMenuCollapsed: (collapsed: boolean) => void;
+  reset: () => void;
 }
 
 const initialState = {
   token: "",
-  role: null,
+  userInfo: null,
   menus: [],
   btnPermissions: [],
 };
@@ -50,9 +51,9 @@ export const useGlobalStore = create<State & Actions>()(
         set((state) => {
           state.token = token;
         }),
-      setRole: (role) =>
+      setUserInfo: (userInfo) =>
         set((state) => {
-          state.role = role;
+          state.userInfo = userInfo;
         }),
       setMenus: (menus) =>
         set((state) => {

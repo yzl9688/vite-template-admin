@@ -8,6 +8,7 @@ import { isArray } from "lodash";
 import Header from "@/layouts/header/Header";
 import Sider from "@/layouts/sider/Sider";
 import { useThemeSetting } from "@/stores/theme";
+import { usePullMenus, usePullUserInfo } from "@/hooks/usePullData";
 
 export type MenuItem = {
   key: string;
@@ -51,6 +52,8 @@ const App: React.FC = () => {
   const remoteMenus = useGlobalStore((state) => state.menus);
   const menuMode = useThemeSetting((state) => state.menuMode);
   const location = useLocation();
+  usePullUserInfo();
+  usePullMenus();
 
   const allMenus = useMemo(() => {
     return generateMenus([...menus, ...remoteMenus]);

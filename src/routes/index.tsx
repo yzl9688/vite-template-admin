@@ -14,7 +14,7 @@ const ElementWrapper: React.FC<{
   permissions?: string[];
   children: React.ReactNode;
 }> = React.memo(({ children, title, roles, permissions }) => {
-  const role = useGlobalStore((state) => state.role);
+  const role = useGlobalStore((state) => state.userInfo?.role);
   const setBtnPermissions = useGlobalStore((state) => state.setBtnPermissions);
   if ((roles || []).length && !roles?.includes(role || "")) {
     // 角色鉴权，没有权限则返回403
