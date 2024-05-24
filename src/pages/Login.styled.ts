@@ -84,6 +84,7 @@ const inputStyle = `
   background-color: #fff!important;
   border-radius: 4px;
   font-size: 18px;
+  color: rgba(0, 0, 0, 0.88);
   border: 1px solid #e3e3e3;
 
   &:focus-within, &:hover {
