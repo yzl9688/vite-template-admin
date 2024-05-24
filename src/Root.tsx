@@ -14,7 +14,7 @@ const Root: React.FC = () => {
     <ConfigProvider theme={antdProviderConfig}>
       <ThemeProvider theme={themeProviderConfig}>
         <SWRConfig value={swrConfig}>
-          <div className="h-[100vh] overflow-hidden">
+          <div className="h-full">
             <BrowserRouter basename="/">
               <MenuRoutes />
             </BrowserRouter>

@@ -3,11 +3,20 @@ import { themeConfig } from "@/config/themeConfig";
 import { ThemeEnum } from "@/enums/appEnums";
 import { useThemeStore } from "@/stores/theme";
 import { ThemeConfig, message, theme } from "antd";
+import { useEffect } from "react";
 import { SWRConfiguration } from "swr";
 
 // 主题配置
 export const useThemeConifg = () => {
   const themeMode = useThemeStore((state) => state.theme);
+
+  useEffect(() => {
+    if (themeMode == ThemeEnum.DARK) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [themeMode]);
 
   const antdProviderConfig: ThemeConfig = {
     algorithm:

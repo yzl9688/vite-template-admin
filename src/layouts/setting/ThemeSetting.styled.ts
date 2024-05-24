@@ -12,7 +12,10 @@ export const SettingBtn = styled.div`
   cursor: pointer;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: ${(props) =>
+      props.theme.themeMode == ThemeEnum.LIGHT
+        ? "rgba(0, 0, 0, 0.12)"
+        : "rgba(255, 255, 255, 0.12)"};
   }
 `;
 
