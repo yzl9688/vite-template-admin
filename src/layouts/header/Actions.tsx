@@ -1,4 +1,4 @@
-import ThemeSetting from "@/components/setting/ThemeSetting";
+import ThemeSetting from "@/layouts/setting/ThemeSetting";
 import { useGlobalStore } from "@/stores";
 import { Avatar, Dropdown, MenuProps } from "antd";
 import { memo, useCallback } from "react";
@@ -34,7 +34,7 @@ const Actions: React.FC = () => {
         menu={{ items, onClick: handleMenuClick }}
         placement="bottom"
         arrow>
-        <div className="hover:bg-[#f6f6f6] cursor-pointer px-2 overflow-hidden whitespace-nowrap">
+        <div className="hover:bg-[rgba(255,255,255,0.12)] cursor-pointer px-2 overflow-hidden whitespace-nowrap">
           <Avatar size="large" src={<img src={userInfo?.avatar} />} />
           <span className="ml-2">{userInfo?.username}</span>
         </div>

@@ -1,8 +1,7 @@
+import { MenuModeEnum, ThemeEnum } from "@/enums/appEnums";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-
-export type MenuMode = "top" | "left" | "topLeft";
 
 interface State {
   /**
@@ -11,20 +10,30 @@ interface State {
    * left: 左侧菜单
    * topLeft: 顶部左侧联动菜单
    */
-  menuMode: MenuMode;
+  menuMode: MenuModeEnum;
+  /**
+   * 主题
+   */
+  theme: ThemeEnum;
 }
 
 interface Action {
-  setMenuMode: (mode: MenuMode) => void;
+  setMenuMode: (mode: MenuModeEnum) => void;
+  setTheme: (theme: ThemeEnum) => void;
 }
 
-export const useThemeSetting = create<State & Action>()(
+export const useThemeStore = create<State & Action>()(
   persist(
     immer((set) => ({
-      menuMode: "topLeft",
+      menuMode: MenuModeEnum.TOP_LEFT,
+      theme: ThemeEnum.LIGHT,
       setMenuMode: (mode) =>
         set((state) => {
           state.menuMode = mode;
+        }),
+      setTheme: (theme) =>
+        set((state) => {
+          state.theme = theme;
         }),
     })),
     {
