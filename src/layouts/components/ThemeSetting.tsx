@@ -1,10 +1,11 @@
 import { SettingOutlined } from "@ant-design/icons";
-import { MenuModeImg, SettingBtn } from "./ThemeSetting.styled";
+import { MenuModeImg } from "../styles/ThemeSetting.styled";
 import { memo, useCallback, useState } from "react";
 import { Divider, Drawer, Switch, SwitchProps, Tooltip } from "antd";
 import { useThemeStore } from "@/stores/theme";
 import IconFont from "@/components/IconFont";
 import { MenuModeEnum, ThemeEnum } from "@/enums/appEnums";
+import { IconWrapper } from "../styles/IconWrapper.styled";
 
 type ModeItem = { label: string; value: MenuModeEnum };
 
@@ -34,9 +35,9 @@ const ThemeSetting: React.FC = () => {
 
   return (
     <>
-      <SettingBtn onClick={() => setVisible(true)}>
+      <IconWrapper onClick={() => setVisible(true)}>
         <SettingOutlined />
-      </SettingBtn>
+      </IconWrapper>
 
       <Drawer title="主题设置" open={visible} onClose={() => setVisible(false)}>
         <Divider>主题</Divider>

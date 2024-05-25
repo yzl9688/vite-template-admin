@@ -1,7 +1,7 @@
 import { ThemeEnum } from "@/enums/appEnums";
 import { useGlobalStore } from "@/stores";
 import React from "react";
-import { LogoWrapper } from "./AppLogo.styled";
+import { LogoWrapper } from "../styles/AppLogo.styled";
 
 const AppLogo: React.FC<{ theme?: ThemeEnum }> = ({ theme }) => {
   const menuCollapsed = useGlobalStore((state) => state.menuCollapsed);

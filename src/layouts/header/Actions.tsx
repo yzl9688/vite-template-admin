@@ -1,8 +1,11 @@
-import ThemeSetting from "@/layouts/setting/ThemeSetting";
+import ThemeSetting from "@/layouts/components/ThemeSetting";
 import { useGlobalStore } from "@/stores";
+import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown, MenuProps } from "antd";
 import { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import screenfull from "screenfull";
+import { IconWrapper } from "../styles/IconWrapper.styled";
 
 const Actions: React.FC = () => {
   const userInfo = useGlobalStore((state) => state.userInfo);
@@ -28,17 +31,32 @@ const Actions: React.FC = () => {
     [navigate],
   );
 
+  const handleToggle = useCallback(() => {
+    if (screenfull.isEnabled) {
+      screenfull.toggle();
+    }
+  }, []);
+
   return (
     <>
+      <IconWrapper onClick={handleToggle}>
+        {screenfull.isFullscreen ? (
+          <FullscreenExitOutlined />
+        ) : (
+          <FullscreenOutlined />
+        )}
+      </IconWrapper>
+
       <Dropdown
         menu={{ items, onClick: handleMenuClick }}
         placement="bottom"
         arrow>
         <div className="dark:hover:bg-[rgba(255,255,255,0.12)] hover:bg-[rgba(0,0,0,0.12)] cursor-pointer px-2 overflow-hidden whitespace-nowrap">
-          <Avatar size="large" src={<img src={userInfo?.avatar} />} />
+          <Avatar size="default" src={<img src={userInfo?.avatar} />} />
           <span className="ml-2">{userInfo?.username}</span>
         </div>
       </Dropdown>
+
       <ThemeSetting />
     </>
   );
