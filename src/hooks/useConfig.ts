@@ -1,6 +1,7 @@
 import { swrConfig } from "@/config/swrConfig";
 import { themeConfig } from "@/config/themeConfig";
 import { ThemeEnum } from "@/enums/appEnums";
+import { useGlobalStore } from "@/stores";
 import { useThemeStore } from "@/stores/theme";
 import { ThemeConfig, message, theme } from "antd";
 import { useEffect } from "react";
@@ -57,11 +58,19 @@ export const useThemeConifg = () => {
 // SWR配置
 export const useSWRConfig = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const reset = useGlobalStore((state) => state.reset);
 
   const config: SWRConfiguration = {
     ...swrConfig,
     onError: (err) => {
       err?.info?.message && messageApi.error(err.info?.message);
+      if (err?.info?.code == 401) {
+        // token已过期，跳转登录页
+        setTimeout(() => {
+          reset();
+          location.reload();
+        }, 300);
+      }
     },
   };
 

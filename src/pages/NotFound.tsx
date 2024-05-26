@@ -1,9 +1,13 @@
+import { useGlobalStore } from "@/stores";
 import { Button, Result } from "antd";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const NotAuth: React.FC = () => {
   const navigate = useNavigate();
+  const token = useGlobalStore((state) => state.token);
+
+  if (!token) return <Navigate to="/login" />;
 
   return (
     <div className="pt-[200px]">
