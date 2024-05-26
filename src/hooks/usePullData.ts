@@ -1,11 +1,11 @@
 import { useGlobalStore } from "@/stores";
-import { IMenu, ResponseInfo, UserInfo } from "@/types";
+import { IMenu, ResponseData, UserInfo } from "@/types";
 import { useEffect } from "react";
 import useSWR from "swr";
 
 export const usePullUserInfo = () => {
   const setUserInfo = useGlobalStore((state) => state.setUserInfo);
-  const { data } = useSWR<ResponseInfo<UserInfo>>("/userInfo");
+  const { data } = useSWR<ResponseData<UserInfo>>("/userInfo");
 
   useEffect(() => {
     if (data) {
@@ -16,7 +16,7 @@ export const usePullUserInfo = () => {
 
 export const usePullMenus = () => {
   const setMenus = useGlobalStore((state) => state.setMenus);
-  const { data } = useSWR<ResponseInfo<IMenu[]>>("/menus");
+  const { data } = useSWR<ResponseData<IMenu[]>>("/menus");
 
   useEffect(() => {
     if (data) {

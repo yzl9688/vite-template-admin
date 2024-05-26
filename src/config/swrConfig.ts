@@ -3,6 +3,7 @@ import { auth } from "@/utils/middleware";
 import { SWRConfiguration } from "swr";
 
 export const swrConfig: SWRConfiguration = {
+  revalidateOnFocus: false,
   errorRetryCount: 3,
   fetcher: fetcher,
   errorRetryInterval: 5000,

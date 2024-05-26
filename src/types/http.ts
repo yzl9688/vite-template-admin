@@ -1,5 +1,14 @@
-export interface ResponseInfo<T extends { [prop: string]: any } = {}> {
+import { RequestEnum } from "@/enums/httpEnums";
+
+export interface ResponseData<T extends { [prop: string]: any } = {}> {
   code: number;
   data: T | null;
   message: string;
+}
+
+export interface RequestParams {
+  url: string;
+  method?: RequestEnum;
+  params?: object;
+  headers?: Headers;
 }

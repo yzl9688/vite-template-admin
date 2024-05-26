@@ -10,6 +10,7 @@ import { SWRConfiguration } from "swr";
 export const useThemeConifg = () => {
   const themeMode = useThemeStore((state) => state.theme);
 
+  // tailwindcss 主题切换
   useEffect(() => {
     if (themeMode == ThemeEnum.DARK) {
       document.documentElement.classList.add("dark");
@@ -37,6 +38,7 @@ export const useThemeConifg = () => {
           themeMode == ThemeEnum.LIGHT
             ? "#fff"
             : themeConfig.darkBackgroundColor,
+        headerPadding: 0,
       },
     },
   };

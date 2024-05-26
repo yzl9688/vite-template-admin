@@ -6,4 +6,16 @@ export const menus: IMenu[] = [
     title: "地图",
     component: "map/Index",
   },
+  {
+    path: "/components",
+    title: "组件示例",
+    icon: "icon-yewutubiao_zujian-shujuluruzujian",
+    children: [
+      {
+        path: "/components/table",
+        title: "表格",
+        component: "component-example/table/Table",
+      },
+    ],
+  },
 ];

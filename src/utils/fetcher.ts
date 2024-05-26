@@ -1,15 +1,9 @@
+import { RequestParams } from "@/types";
 import { isString } from "lodash";
 
-export const fetcher: (
-  args:
-    | string
-    | {
-        url: string;
-        method?: string;
-        params?: object;
-        headers?: object;
-      },
-) => Promise<any> = async (args) => {
+export const fetcher: (args: string | RequestParams) => Promise<any> = async (
+  args,
+) => {
   let url,
     method = "GET",
     params = {},

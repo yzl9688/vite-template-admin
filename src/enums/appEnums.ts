@@ -1,5 +1,5 @@
 /**
- * 主题枚举
+ * @description: 主题枚举
  */
 export enum ThemeEnum {
   /**
@@ -13,7 +13,7 @@ export enum ThemeEnum {
 }
 
 /**
- * 菜单布局枚举
+ * @description: 菜单布局枚举
  */
 export enum MenuModeEnum {
   /**

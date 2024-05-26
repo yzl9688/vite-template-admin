@@ -1,14 +1,8 @@
 import { useGlobalStore } from "@/stores";
+import { RequestParams } from "@/types";
 import { isString } from "lodash";
 import { useCallback } from "react";
 import { Middleware } from "swr";
-
-interface RequestParams {
-  url: string;
-  method?: string;
-  params?: object;
-  headers?: Headers;
-}
 
 // 为每个请求设置请求头
 export const auth: Middleware = (useSWRNext) => {

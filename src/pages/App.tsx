@@ -66,7 +66,7 @@ const App: React.FC = () => {
 
   const Content = useMemo(
     () => (
-      <Layout.Content className="m-[12px] rounded-s p-[12px]">
+      <Layout.Content className="m-[12px] rounded-s overflow-hidden overflow-y-auto">
         <Outlet />
       </Layout.Content>
     ),

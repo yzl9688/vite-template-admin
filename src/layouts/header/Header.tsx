@@ -62,7 +62,7 @@ const Header: React.FC<{ menus: MenuItem[]; firstMenu?: MenuItem }> = ({
   );
 
   return (
-    <Layout.Header className="p-0 flex items-center border-b-[rgba(253,253,253,0.12)] border-solid border-b-[1px]">
+    <Layout.Header className="flex items-center border-b-[rgba(253,253,253,0.12)] border-solid border-b-[1px]">
       {menuMode !== MenuModeEnum.LEFT && <AppLogo />}
       {menuMode == MenuModeEnum.LEFT && (
         <Button
