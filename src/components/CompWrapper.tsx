@@ -2,12 +2,14 @@ import React, { Suspense, useMemo } from "react";
 import Loading from "./Loading";
 
 // 异步加载所有组件
-const components = import.meta.glob("../pages/**/*.tsx");
+const components = import.meta.glob<{ default: React.ComponentType }>(
+  "../pages/**/*.tsx",
+);
 
 // 惰性加载所有组件
-const lazyComponents: { [key: string]: React.ComponentType<any> } = {};
+const lazyComponents: { [key: string]: React.ComponentType } = {};
 Object.keys(components).forEach((item) => {
-  lazyComponents[item] = React.lazy(components[item] as any);
+  lazyComponents[item] = React.lazy(components[item]);
 });
 
 const CompWrapper: React.FC<{ path: string }> = ({ path }) => {

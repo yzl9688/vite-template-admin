@@ -1,9 +1,21 @@
-import { RequestParams } from "@/types";
+import { RequestParams, ResponseData } from "@/types";
 import { isString } from "lodash";
+import { JsonBodyType } from "msw";
 
-export const fetcher: (args: string | RequestParams) => Promise<any> = async (
-  args,
-) => {
+class FetchError extends Error {
+  info?: ResponseData<unknown>;
+  status: number;
+
+  constructor(message: string, status: number, info?: ResponseData<unknown>) {
+    super(message);
+    this.status = status;
+    this.info = info;
+  }
+}
+
+export const fetcher: (
+  args: string | RequestParams,
+) => Promise<JsonBodyType> = async (args) => {
   let url,
     method = "GET",
     params = {},
@@ -27,9 +39,11 @@ export const fetcher: (args: string | RequestParams) => Promise<any> = async (
   const data = await res.json();
 
   if (!res.ok || data?.code !== 200) {
-    const error: any = new Error("An error occurred while fetching the data.");
-    error.info = data;
-    error.status = data?.code || res.status;
+    const error = new FetchError(
+      "An error occurred while fetching the data.",
+      data?.code || res.status,
+      data,
+    );
 
     throw error;
   }

@@ -18,7 +18,7 @@ export const useQueryTable = (
     pageSize: 10,
   });
   const { data, isLoading } = useSWR<
-    ResponseData<{ list: any[]; total: number }>
+    ResponseData<{ list: unknown[]; total: number }>
   >(
     {
       ...requestParams,

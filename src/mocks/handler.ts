@@ -4,27 +4,31 @@ import { IMenu, ResponseData, UserInfo } from "@/types";
 import staffHandlers from "./handlers/staffHandler";
 import { baseUrl } from "./utils";
 import { withAuth } from "./middleware";
+import { PathParam } from "react-router-dom";
 
 export const handlers = [
   ...staffHandlers,
   // 登录
-  http.post(baseUrl + "/login", async ({ request }) => {
-    const { username, password }: any = await request.json();
-    if (username !== "admin" || password !== "123456")
-      return HttpResponse.json<ResponseData>({
-        code: 500,
-        data: null,
-        message: "用户名或密码错误！",
-      });
+  http.post<PathParam<never>, { username: string; password: string }>(
+    baseUrl + "/login",
+    async ({ request }) => {
+      const { username, password } = await request.json();
+      if (username !== "admin" || password !== "123456")
+        return HttpResponse.json<ResponseData<null>>({
+          code: 500,
+          data: null,
+          message: "用户名或密码错误！",
+        });
 
-    return HttpResponse.json<ResponseData<{ token: string }>>({
-      code: 200,
-      data: {
-        token: "Bearer admin123456",
-      },
-      message: "success",
-    });
-  }),
+      return HttpResponse.json<ResponseData<{ token: string }>>({
+        code: 200,
+        data: {
+          token: "Bearer admin123456",
+        },
+        message: "success",
+      });
+    },
+  ),
   // 获取菜单
   http.get(
     baseUrl + "/menus",

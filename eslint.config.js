@@ -1,17 +1,32 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
-import eslintConfigPrettier from "eslint-config-prettier";
+import react from "eslint-plugin-react";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default [
-  {
-    languageOptions: {
-      globals: globals.browser,
-    },
-  },
+  { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  pluginReactConfig,
-  eslintConfigPrettier,
+  {
+    files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
+    plugins: {
+      react,
+    },
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.browser,
+      },
+    },
+    rules: {
+      "react/jsx-uses-react": "error",
+      "react/jsx-uses-vars": "error",
+    },
+  },
+  eslintPluginPrettierRecommended,
 ];

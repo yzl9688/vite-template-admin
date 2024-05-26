@@ -1,6 +1,6 @@
 import { RequestEnum } from "@/enums/httpEnums";
 
-export interface ResponseData<T extends { [prop: string]: any } = {}> {
+export interface ResponseData<T> {
   code: number;
   data: T | null;
   message: string;

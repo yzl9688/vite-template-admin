@@ -8,7 +8,7 @@ export function withAuth(resolver: HttpResponseResolver): HttpResponseResolver {
     const token = request.headers.get("Authorization");
 
     if (token !== "Bearer admin123456") {
-      return HttpResponse.json<ResponseData>({
+      return HttpResponse.json<ResponseData<null>>({
         code: 401,
         data: null,
         message: "token已过期!",
