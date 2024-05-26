@@ -57,7 +57,7 @@ const Header: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
       const targetMenu = findTargetMenu(e.key, menus);
       navigate(targetMenu?.key || "");
     },
-    [navigate, menuMode],
+    [navigate, menuMode, menus],
   );
 
   return (
