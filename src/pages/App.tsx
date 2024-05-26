@@ -1,7 +1,7 @@
 import { useGlobalStore } from "@/stores";
 import { Layout } from "antd";
 import React, { useMemo } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import menus from "@/routes/config";
 import { IMenu } from "@/types/menu";
 import { isArray, isString } from "lodash";
@@ -35,34 +35,15 @@ const generateMenus: (menus: IMenu[]) => MenuItem[] = (menus) => {
     });
 };
 
-// 查找一级菜单
-const findFirstLevelMenu: (
-  path: string,
-  menus: MenuItem[],
-) => MenuItem | undefined = (path, menus) => {
-  const menu = menus.find(
-    (item) =>
-      path.indexOf(item?.key) == 0 &&
-      ["/", undefined].includes(path[item.key.length]),
-  );
-
-  return menu;
-};
-
 const App: React.FC = () => {
   const remoteMenus = useGlobalStore((state) => state.menus);
   const menuMode = useThemeStore((state) => state.menuMode);
-  const location = useLocation();
   usePullUserInfo();
   usePullMenus();
 
   const allMenus = useMemo(() => {
     return generateMenus([...menus, ...remoteMenus]);
   }, [remoteMenus]);
-
-  const firstMenu = useMemo(() => {
-    return findFirstLevelMenu(location.pathname, allMenus);
-  }, [location.pathname, allMenus]);
 
   const Content = useMemo(
     () => (
@@ -73,12 +54,20 @@ const App: React.FC = () => {
     [],
   );
 
+  const HeaderMemo = useMemo(() => {
+    return <Header menus={allMenus} />;
+  }, [menus]);
+
+  const SiderMemo = useMemo(() => {
+    return <Sider menus={allMenus} />;
+  }, [menus]);
+
   if (menuMode == MenuModeEnum.LEFT) {
     return (
       <Layout className="h-full">
-        <Sider menus={allMenus} firstMenu={firstMenu} />
+        {SiderMemo}
         <Layout>
-          <Header menus={allMenus} firstMenu={firstMenu} />
+          {HeaderMemo}
           {Content}
         </Layout>
       </Layout>
@@ -87,12 +76,9 @@ const App: React.FC = () => {
 
   return (
     <Layout className="h-full">
-      <Header menus={allMenus} firstMenu={firstMenu} />
+      {HeaderMemo}
       <Layout>
-        {menuMode == MenuModeEnum.TOP_LEFT &&
-        (firstMenu?.children || []).length ? (
-          <Sider menus={allMenus} firstMenu={firstMenu} />
-        ) : null}
+        {menuMode == MenuModeEnum.TOP_LEFT ? SiderMemo : null}
         {Content}
       </Layout>
     </Layout>

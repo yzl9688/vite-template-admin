@@ -7,6 +7,7 @@ import { isArray, uniq } from "lodash";
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AppLogo from "../components/AppLogo";
+import { useMenuLocation } from "@/hooks/useMenuLocation";
 
 // 获取当前菜单的父级菜单的key
 const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (
@@ -27,13 +28,11 @@ const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (
   return [];
 };
 
-export const Sider: React.FC<{ menus: MenuItem[]; firstMenu?: MenuItem }> = ({
-  menus,
-  firstMenu,
-}) => {
+export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
   const menuCollapsed = useGlobalStore((state) => state.menuCollapsed);
   const setMenuCollapsed = useGlobalStore((state) => state.setMenuCollapsed);
   const menuMode = useThemeStore((state) => state.menuMode);
+  const { firstMenu } = useMenuLocation(menus);
 
   const [openedKeys, setOpenedKeys] = useState<string[]>([]);
 
@@ -93,7 +92,6 @@ export const Sider: React.FC<{ menus: MenuItem[]; firstMenu?: MenuItem }> = ({
       collapsed={menuCollapsed}>
       {menuMode == MenuModeEnum.LEFT && <AppLogo theme={ThemeEnum.DARK} />}
       <Menu
-        className="h-full"
         mode="inline"
         theme="dark"
         items={_menus}

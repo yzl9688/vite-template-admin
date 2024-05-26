@@ -8,6 +8,7 @@ import { MenuItem } from "@/pages/App";
 import { memo, useCallback, useMemo } from "react";
 import { MenuModeEnum } from "@/enums/appEnums";
 import AppLogo from "../components/AppLogo";
+import { useMenuLocation } from "@/hooks/useMenuLocation";
 
 const findTargetMenu: (
   path: string,
@@ -28,22 +29,20 @@ const findTargetMenu: (
   return targetMenu;
 };
 
-const Header: React.FC<{ menus: MenuItem[]; firstMenu?: MenuItem }> = ({
-  menus,
-  firstMenu,
-}) => {
+const Header: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
   const menuCollapsed = useGlobalStore((state) => state.menuCollapsed);
   const setMenuCollapsed = useGlobalStore((state) => state.setMenuCollapsed);
   const menuMode = useThemeStore((state) => state.menuMode);
   const navigate = useNavigate();
+  const { firstMenuKey } = useMenuLocation(menus);
 
   const handleMenuCollapseToggle = useCallback(() => {
     setMenuCollapsed(!menuCollapsed);
   }, [menuCollapsed]);
 
   const selectedKeys = useMemo(() => {
-    return firstMenu ? [firstMenu.key] : [];
-  }, [firstMenu]);
+    return firstMenuKey ? [firstMenuKey] : [];
+  }, [firstMenuKey]);
 
   const filteredMenus = useMemo(() => {
     if (menuMode == MenuModeEnum.TOP_LEFT) {
