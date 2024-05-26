@@ -56,11 +56,11 @@ const App: React.FC = () => {
 
   const HeaderMemo = useMemo(() => {
     return <Header menus={allMenus} />;
-  }, [menus]);
+  }, [allMenus]);
 
   const SiderMemo = useMemo(() => {
     return <Sider menus={allMenus} />;
-  }, [menus]);
+  }, [allMenus]);
 
   if (menuMode == MenuModeEnum.LEFT) {
     return (
