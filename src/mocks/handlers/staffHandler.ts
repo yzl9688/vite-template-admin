@@ -7,7 +7,7 @@ const staffHandlers = [
   http.post(
     baseUrl + "/staffList",
     withAuth(async ({ request }) => {
-      const { current = 1, pageSize = 10 }: any = await request.json();
+      const { current, pageSize }: any = await request.json();
 
       await delay(1000);
 
@@ -25,7 +25,9 @@ const staffHandlers = [
         });
       }
 
-      return HttpResponse.json<ResponseData>({
+      return HttpResponse.json<
+        ResponseData<{ list: unknown[]; total: number }>
+      >({
         code: 200,
         data: {
           list: res,

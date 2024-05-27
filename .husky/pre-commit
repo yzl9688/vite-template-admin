@@ -1,4 +1,9 @@
-bun lint
 
+# 修复代码风格
 bun pretty-quick --pattern "**/*.*(js|jsx|ts|tsx)" --staged
 
+# 执行eslint校验
+bun lint
+
+# 执行typescript校验
+bun type:check

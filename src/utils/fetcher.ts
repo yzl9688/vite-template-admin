@@ -1,6 +1,6 @@
 import { RequestParams, ResponseData } from "@/types";
 import { isString } from "lodash";
-import { JsonBodyType } from "msw";
+import { Key } from "swr";
 
 class FetchError extends Error {
   info?: ResponseData<unknown>;
@@ -12,10 +12,23 @@ class FetchError extends Error {
     this.info = info;
   }
 }
+/**
+ * @description 用来兼容useSWRMutation的fetcher
+ */
+export const manualFetcher = (
+  _key: Key,
+  { arg }: Readonly<{ arg: RequestParams }>,
+) => {
+  return fetcher(arg);
+};
 
-export const fetcher: (
+export const fetcher: <
+  T extends ResponseData<object | unknown[] | null> = ResponseData<
+    object | unknown[] | null
+  >,
+>(
   args: string | RequestParams,
-) => Promise<JsonBodyType> = async (args) => {
+) => Promise<T> = async (args) => {
   let url,
     method = "GET",
     params = {},

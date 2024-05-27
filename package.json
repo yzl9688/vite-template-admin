@@ -10,7 +10,8 @@
     "test": "bunx --bun vite build --mode test",
     "staging": "bunx --bun vite build --mode staging",
     "build": "bunx --bun vite build",
-    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint": "eslint src/**/*.{ts,tsx} --fix",
+    "type:check": "tsc --noEmit --skipLibCheck --project ./tsconfig.json",
     "preview": "vite preview",
     "prepare": "husky"
   },
@@ -51,7 +52,7 @@
     "globals": "^15.3.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "msw": "^2.3.0",
+    "msw": "2.1.4",
     "postcss": "^8.4.38",
     "prettier": "3.2.5",
     "pretty-quick": "^4.0.0",

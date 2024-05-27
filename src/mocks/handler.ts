@@ -1,15 +1,14 @@
-import { HttpResponse, http, delay } from "msw";
+import { HttpResponse, http, delay, PathParams } from "msw";
 import { menus } from "./menus";
 import { IMenu, ResponseData, UserInfo } from "@/types";
 import staffHandlers from "./handlers/staffHandler";
 import { baseUrl } from "./utils";
 import { withAuth } from "./middleware";
-import { PathParam } from "react-router-dom";
 
 export const handlers = [
   ...staffHandlers,
   // 登录
-  http.post<PathParam<never>, { username: string; password: string }>(
+  http.post<PathParams, { username: string; password: string }>(
     baseUrl + "/login",
     async ({ request }) => {
       const { username, password } = await request.json();

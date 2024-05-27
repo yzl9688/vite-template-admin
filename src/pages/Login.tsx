@@ -13,19 +13,23 @@ import {
   Title,
   TopTitle,
 } from "./Login.styled";
-import usePostMutation from "@/hooks/usePostMutation";
+import useRequest from "@/hooks/useRequest";
+import { ResponseData } from "@/types";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const setToken = useGlobalStore((state) => state.setToken);
 
-  const { trigger } = usePostMutation("/login");
+  const { trigger } = useRequest("/login");
 
   const handleSubmit: FormProps["onFinish"] = async (values) => {
-    const res = await trigger(values);
-    setToken(res.data.token);
-
-    navigate("/");
+    const res = (await trigger(values)) as unknown as ResponseData<{
+      token: string;
+    }>;
+    if (res.data) {
+      setToken(res.data.token);
+      navigate("/");
+    }
   };
 
   return (
