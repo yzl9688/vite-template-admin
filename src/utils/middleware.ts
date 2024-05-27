@@ -13,7 +13,7 @@ export const auth: Middleware = (useSWRNext) => {
     const extendedFetcher = useCallback(
       (
         args: string | Omit<RequestParams, "headers">,
-        triggerData: { arg: unknown },
+        { arg }: { arg: unknown } = { arg: undefined },
       ) => {
         const params: RequestParams = {
           url: "",
@@ -24,8 +24,8 @@ export const auth: Middleware = (useSWRNext) => {
           Object.assign(params, args);
         }
 
-        if (triggerData.arg) {
-          params.params = triggerData.arg;
+        if (arg) {
+          params.params = arg;
         }
 
         const headers = new Headers();
