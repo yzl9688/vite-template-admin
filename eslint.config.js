@@ -28,5 +28,11 @@ export default [
       "react/jsx-uses-vars": "error",
     },
   },
+  {
+    files: ["**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": 0,
+    },
+  },
   eslintPluginPrettierRecommended,
 ];
