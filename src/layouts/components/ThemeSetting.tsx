@@ -1,4 +1,4 @@
-import { SettingOutlined } from "@ant-design/icons";
+import { CheckOutlined, SettingOutlined } from "@ant-design/icons";
 import { MenuModeImg } from "../styles/ThemeSetting.styled";
 import { memo, useCallback, useState } from "react";
 import { Divider, Drawer, Switch, SwitchProps, Tooltip } from "antd";
@@ -6,15 +6,28 @@ import { useThemeStore } from "@/stores/theme";
 import IconFont from "@/components/IconFont";
 import { MenuModeEnum, ThemeEnum } from "@/enums/appEnums";
 import { IconWrapper } from "../styles/IconWrapper.styled";
+import { colorPrimaryList } from "@/config/themeConfig";
 
 type ModeItem = { label: string; value: MenuModeEnum };
 
 const ThemeSetting: React.FC = () => {
   const [visible, setVisible] = useState(false);
-  const menuMode = useThemeStore((state) => state.menuMode);
-  const setMenuMode = useThemeStore((state) => state.setMenuMode);
-  const theme = useThemeStore((state) => state.theme);
-  const setTheme = useThemeStore((state) => state.setTheme);
+
+  const {
+    menuMode,
+    setMenuMode,
+    theme,
+    setTheme,
+    colorPrimary,
+    setColorPrimary,
+  } = useThemeStore((state) => ({
+    menuMode: state.menuMode,
+    setMenuMode: state.setMenuMode,
+    theme: state.theme,
+    setTheme: state.setTheme,
+    colorPrimary: state.colorPrimary,
+    setColorPrimary: state.setColorPrimary,
+  }));
 
   const modeList: ModeItem[] = [
     { label: "顶部菜单模式", value: MenuModeEnum.TOP },
@@ -49,6 +62,24 @@ const ThemeSetting: React.FC = () => {
             unCheckedChildren={<IconFont type="icon-moon" />}
             onChange={handleThemeChange}
           />
+        </div>
+
+        <div className="flex items-center pt-4">
+          {colorPrimaryList.map((color) => {
+            return (
+              <div
+                className="w-8 h-8 text-center leading-8 mr-2 cursor-pointer rounded-sm"
+                style={{
+                  background: color,
+                }}
+                key={color}
+                onClick={() => setColorPrimary(color)}>
+                {colorPrimary == color ? (
+                  <CheckOutlined className="text-white" />
+                ) : null}
+              </div>
+            );
+          })}
         </div>
 
         <Divider>菜单布局</Divider>

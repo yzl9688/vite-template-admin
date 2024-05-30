@@ -4,6 +4,7 @@ export const HoverWrapper = styled.div<{
   $selected?: boolean;
   $color?: string;
 }>`
+  cursor: pointer;
   color: ${(props) =>
     props.$selected
       ? props.theme.colorPrimary

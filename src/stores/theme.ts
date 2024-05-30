@@ -1,3 +1,4 @@
+import { themeConfig } from "@/config/themeConfig";
 import { MenuModeEnum, ThemeEnum } from "@/enums/appEnums";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -15,11 +16,16 @@ interface State {
    * 主题
    */
   theme: ThemeEnum;
+  /**
+   * 主题色
+   */
+  colorPrimary: string;
 }
 
 interface Action {
   setMenuMode: (mode: MenuModeEnum) => void;
   setTheme: (theme: ThemeEnum) => void;
+  setColorPrimary: (color: string) => void;
 }
 
 export const useThemeStore = create<State & Action>()(
@@ -27,6 +33,11 @@ export const useThemeStore = create<State & Action>()(
     immer((set) => ({
       menuMode: MenuModeEnum.TOP_LEFT,
       theme: ThemeEnum.LIGHT,
+      colorPrimary: themeConfig.colorPrimary,
+      setColorPrimary: (color) =>
+        set((state) => {
+          state.colorPrimary = color;
+        }),
       setMenuMode: (mode) =>
         set((state) => {
           state.menuMode = mode;

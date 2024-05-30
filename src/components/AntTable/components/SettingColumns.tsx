@@ -119,7 +119,7 @@ export const SettingColumns: React.FC = () => {
       }}
       onOpenChange={handleOpenChange}
       content={<PopoverContent />}>
-      <SettingOutlined className="text-lg cursor-pointer z-50" />
+      <SettingOutlined className="text-lg cursor-pointer hover:text-primary" />
     </Popover>
   );
 };

@@ -10,6 +10,7 @@ import { SWRConfiguration } from "swr";
 // 主题配置
 export const useThemeConifg = () => {
   const themeMode = useThemeStore((state) => state.theme);
+  const colorPrimary = useThemeStore((state) => state.colorPrimary);
 
   // tailwindcss 主题切换
   useEffect(() => {
@@ -20,13 +21,17 @@ export const useThemeConifg = () => {
     }
   }, [themeMode]);
 
+  useEffect(() => {
+    document.documentElement.style.setProperty("--color-primary", colorPrimary);
+  }, [colorPrimary]);
+
   const antdProviderConfig: ThemeConfig = {
     algorithm:
       themeMode == ThemeEnum.LIGHT
         ? theme.defaultAlgorithm
         : theme.darkAlgorithm,
     token: {
-      colorPrimary: themeConfig.colorPrimary,
+      colorPrimary: colorPrimary,
       colorBgLayout:
         themeMode == ThemeEnum.LIGHT
           ? themeConfig.backgroundColor
@@ -47,6 +52,7 @@ export const useThemeConifg = () => {
   const themeProviderConfig = {
     themeMode: themeMode,
     ...themeConfig,
+    colorPrimary,
   };
 
   return {
