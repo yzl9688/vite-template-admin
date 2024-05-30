@@ -2,6 +2,7 @@ import { RequestParams, ResponseData } from "@/types";
 import { fetcher } from "@/utils/fetcher";
 import { TableProps } from "antd";
 import { PaginationProps } from "antd/lib";
+import { isEqual } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 import { useImmer } from "use-immer";
@@ -9,20 +10,21 @@ import { useImmer } from "use-immer";
 /**
  * @description 管理表格通用逻辑的hook
  */
-export const useQueryTable = (
+export const useAntTable = (
   requestParams: RequestParams,
   initProps?: TableProps,
 ) => {
   const [params, setParams] = useState({
     current: 1,
     pageSize: 10,
+    ...requestParams.params,
   });
-  const { data, isLoading } = useSWR<
+  const { data, isLoading, isValidating, mutate } = useSWR<
     ResponseData<{ list: unknown[]; total: number }>
   >(
     {
       ...requestParams,
-      params: Object.assign(requestParams.params || {}, params),
+      params: params,
     },
     fetcher,
     {
@@ -52,18 +54,20 @@ export const useQueryTable = (
   );
 
   // 点击查询或重置按钮时调用，默认会回退到第一页
-  const setRequestParams = (params: object) => {
+  const setRequestParams = (formParams: object) => {
     setParams((pre) => ({
       ...pre,
       current: 1,
-      ...params,
+      ...formParams,
     }));
+    // 参数未发生变化时手动触发
+    if (isEqual(params, { ...params, ...formParams })) mutate();
   };
 
   useEffect(() => {
     setTableProps((draft) => {
       draft.dataSource = data?.data?.list || [];
-      draft.loading = isLoading || false;
+      draft.loading = isLoading || isValidating || false;
       draft.pagination = {
         current: params.current,
         pageSize: params.pageSize,
@@ -72,7 +76,7 @@ export const useQueryTable = (
       };
       if (draft.scroll) draft.scroll.y = params.pageSize > 10 ? 600 : undefined;
     });
-  }, [data, isLoading, params]);
+  }, [data, isLoading, isValidating, params]);
 
   return {
     tableProps,
