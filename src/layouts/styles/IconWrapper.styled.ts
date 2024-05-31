@@ -7,7 +7,7 @@ export const IconWrapper = styled.div`
   height: 100%;
   padding: 0 10px;
   color: ${(props) => (props.theme.themeMode == ThemeEnum.LIGHT ? "rgba(0 0 0 / 85%)" : "#fff")};
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
 
   &:hover {

@@ -1,7 +1,7 @@
 import ThemeSetting from "@/layouts/components/ThemeSetting";
 import { useGlobalStore } from "@/stores";
 import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
-import { Avatar, Dropdown, MenuProps } from "antd";
+import { Avatar, Dropdown, MenuProps, Tooltip } from "antd";
 import { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconWrapper } from "../styles/IconWrapper.styled";
@@ -34,9 +34,11 @@ const Actions: React.FC = () => {
 
   return (
     <>
-      <IconWrapper onClick={handleToggle}>
-        {isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
-      </IconWrapper>
+      <Tooltip title={isFullscreen ? "退出全屏" : "全屏"}>
+        <IconWrapper onClick={handleToggle}>
+          {isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+        </IconWrapper>
+      </Tooltip>
 
       <Dropdown menu={{ items, onClick: handleMenuClick }} placement="bottom" arrow>
         <div className="dark:hover:bg-[rgba(255,255,255,0.12)] hover:bg-[rgba(0,0,0,0.12)] cursor-pointer px-2 overflow-hidden whitespace-nowrap">

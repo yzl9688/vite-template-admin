@@ -111,7 +111,7 @@ export const SettingColumns: React.FC = () => {
       }}
       onOpenChange={handleOpenChange}
       content={<PopoverContent />}>
-      <Tooltip title="列配置">
+      <Tooltip title="列配置" getPopupContainer={(node) => node.parentElement || document.body}>
         <SettingOutlined className="hover:text-primary" />
       </Tooltip>
     </Popover>
