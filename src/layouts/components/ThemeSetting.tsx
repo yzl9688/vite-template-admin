@@ -13,21 +13,16 @@ type ModeItem = { label: string; value: MenuModeEnum };
 const ThemeSetting: React.FC = () => {
   const [visible, setVisible] = useState(false);
 
-  const {
-    menuMode,
-    setMenuMode,
-    theme,
-    setTheme,
-    colorPrimary,
-    setColorPrimary,
-  } = useThemeStore((state) => ({
-    menuMode: state.menuMode,
-    setMenuMode: state.setMenuMode,
-    theme: state.theme,
-    setTheme: state.setTheme,
-    colorPrimary: state.colorPrimary,
-    setColorPrimary: state.setColorPrimary,
-  }));
+  const { menuMode, setMenuMode, theme, setTheme, colorPrimary, setColorPrimary } = useThemeStore(
+    (state) => ({
+      menuMode: state.menuMode,
+      setMenuMode: state.setMenuMode,
+      theme: state.theme,
+      setTheme: state.setTheme,
+      colorPrimary: state.colorPrimary,
+      setColorPrimary: state.setColorPrimary,
+    }),
+  );
 
   const modeList: ModeItem[] = [
     { label: "顶部菜单模式", value: MenuModeEnum.TOP },
@@ -35,16 +30,13 @@ const ThemeSetting: React.FC = () => {
     { label: "顶部左侧菜单联动模式", value: MenuModeEnum.TOP_LEFT },
   ];
 
-  const handleThemeChange = useCallback<Required<SwitchProps>["onChange"]>(
-    (e) => {
-      if (e) {
-        setTheme(ThemeEnum.DARK);
-      } else {
-        setTheme(ThemeEnum.LIGHT);
-      }
-    },
-    [],
-  );
+  const handleThemeChange = useCallback<Required<SwitchProps>["onChange"]>((e) => {
+    if (e) {
+      setTheme(ThemeEnum.DARK);
+    } else {
+      setTheme(ThemeEnum.LIGHT);
+    }
+  }, []);
 
   return (
     <>
@@ -74,9 +66,7 @@ const ThemeSetting: React.FC = () => {
                 }}
                 key={color}
                 onClick={() => setColorPrimary(color)}>
-                {colorPrimary == color ? (
-                  <CheckOutlined className="text-white" />
-                ) : null}
+                {colorPrimary == color ? <CheckOutlined className="text-white" /> : null}
               </div>
             );
           })}

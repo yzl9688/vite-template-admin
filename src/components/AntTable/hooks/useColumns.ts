@@ -11,10 +11,7 @@ function compareColumns(objValue: string[], othValue: string[]) {
 }
 
 // 生成column的配置
-function generateColumns(
-  columns: TableColumnsType,
-  columnsConfig: ColumnInfo[],
-): ColumnInfo[] {
+function generateColumns(columns: TableColumnsType, columnsConfig: ColumnInfo[]): ColumnInfo[] {
   return columns.map((item, index) => {
     const configColumn = columnsConfig.find((c) => c.name == item.title);
 
@@ -31,9 +28,7 @@ export const useColumns: (columns: TableColumns) => {
   filteredColumns: TableColumns;
 } = (columns: TableColumns) => {
   const location = useLocation();
-  const columnsConfig = useTableStore((state) =>
-    state.getColumns(location.pathname),
-  );
+  const columnsConfig = useTableStore((state) => state.getColumns(location.pathname));
   const setColumnsConfig = useTableStore((state) => state.updateColumns);
 
   // 检查columns是否有变动，有则同步
@@ -52,9 +47,7 @@ export const useColumns: (columns: TableColumns) => {
   const filteredColumns = useMemo(() => {
     return sortBy(
       columns.map((column) => {
-        const columnConfig = columnsConfig.find(
-          (item) => item.name == column.title,
-        );
+        const columnConfig = columnsConfig.find((item) => item.name == column.title);
 
         return {
           ...column,

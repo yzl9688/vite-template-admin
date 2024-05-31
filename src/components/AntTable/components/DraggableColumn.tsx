@@ -30,8 +30,7 @@ const DraggableColumn: React.FC<{
     });
   };
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: name });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: name });
 
   const style = {
     transform: CSS.Transform.toString(transform),

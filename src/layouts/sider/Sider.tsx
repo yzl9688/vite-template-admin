@@ -10,10 +10,7 @@ import AppLogo from "../components/AppLogo";
 import { useMenuLocation } from "@/hooks/useMenuLocation";
 
 // 获取当前菜单的父级菜单的key
-const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (
-  path,
-  menus,
-) => {
+const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (path, menus) => {
   for (let i = 0; i < menus.length; i++) {
     const currentMenu = menus[i];
 
@@ -55,10 +52,7 @@ export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
     setTimeout(() => {
       if (firstMenu && !menuCollapsed) {
         // 获取需要打开的菜单
-        const keys = findOpenedKeys(
-          location.pathname,
-          firstMenu.children || [],
-        );
+        const keys = findOpenedKeys(location.pathname, firstMenu.children || []);
         // 删除当前菜单的key
         keys.pop();
         setOpenedKeys((prev) => uniq([...prev, firstMenu.key, ...keys]));
@@ -73,12 +67,9 @@ export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
     [navigate],
   );
 
-  const handleOpenChange = useCallback<Required<MenuProps>["onOpenChange"]>(
-    (openedKeys) => {
-      setOpenedKeys(openedKeys);
-    },
-    [],
-  );
+  const handleOpenChange = useCallback<Required<MenuProps>["onOpenChange"]>((openedKeys) => {
+    setOpenedKeys(openedKeys);
+  }, []);
 
   if (!(_menus || []).length) return <></>;
 

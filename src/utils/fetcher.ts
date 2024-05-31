@@ -15,17 +15,12 @@ class FetchError extends Error {
 /**
  * @description 用来兼容useSWRMutation的fetcher
  */
-export const manualFetcher = (
-  _key: Key,
-  { arg }: Readonly<{ arg: RequestParams }>,
-) => {
+export const manualFetcher = (_key: Key, { arg }: Readonly<{ arg: RequestParams }>) => {
   return fetcher(arg);
 };
 
 export const fetcher: <
-  T extends ResponseData<object | unknown[] | null> = ResponseData<
-    object | unknown[] | null
-  >,
+  T extends ResponseData<object | unknown[] | null> = ResponseData<object | unknown[] | null>,
 >(
   args: string | RequestParams,
 ) => Promise<T> = async (args) => {

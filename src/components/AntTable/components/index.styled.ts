@@ -6,11 +6,7 @@ export const HoverWrapper = styled.div<{
 }>`
   cursor: pointer;
   color: ${(props) =>
-    props.$selected
-      ? props.theme.colorPrimary
-      : props.$color
-        ? props.$color
-        : "inherit"};
+    props.$selected ? props.theme.colorPrimary : props.$color ? props.$color : "inherit"};
 
   &:hover {
     color: ${(props) => props.theme.colorPrimary};

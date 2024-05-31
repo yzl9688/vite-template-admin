@@ -65,9 +65,7 @@ export const useTableStore = create<State & Action>()(
         set((state) => {
           const table = state.tables[key];
           const columnsConfig = table?.columns || [];
-          const columnConfig = columnsConfig.find(
-            (item) => item.name == column.name,
-          );
+          const columnConfig = columnsConfig.find((item) => item.name == column.name);
           if (columnConfig) Object.assign(columnConfig, column);
         }),
       moveColumnByIndex: (key: string, oldIndex: number, newIndex: number) =>

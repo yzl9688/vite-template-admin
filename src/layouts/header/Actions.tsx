@@ -38,10 +38,7 @@ const Actions: React.FC = () => {
         {isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
       </IconWrapper>
 
-      <Dropdown
-        menu={{ items, onClick: handleMenuClick }}
-        placement="bottom"
-        arrow>
+      <Dropdown menu={{ items, onClick: handleMenuClick }} placement="bottom" arrow>
         <div className="dark:hover:bg-[rgba(255,255,255,0.12)] hover:bg-[rgba(0,0,0,0.12)] cursor-pointer px-2 overflow-hidden whitespace-nowrap">
           <Avatar size="default" src={<img src={userInfo?.avatar} />} />
           <span className="ml-2">{userInfo?.username}</span>

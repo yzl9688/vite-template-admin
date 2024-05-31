@@ -10,10 +10,7 @@ import { useImmer } from "use-immer";
 /**
  * @description 管理表格通用逻辑的hook
  */
-export const useAntTable = (
-  requestParams: RequestParams,
-  initProps?: TableProps,
-) => {
+export const useAntTable = (requestParams: RequestParams, initProps?: TableProps) => {
   const [params, setParams] = useState({
     current: 1,
     pageSize: 10,
@@ -42,16 +39,13 @@ export const useAntTable = (
     ...initProps,
   });
 
-  const _handlePageChange = useCallback<Required<PaginationProps>["onChange"]>(
-    (page, pageSize) => {
-      setParams((pre) => ({
-        ...pre,
-        current: pre.current == page ? 1 : page,
-        pageSize: pageSize,
-      }));
-    },
-    [],
-  );
+  const _handlePageChange = useCallback<Required<PaginationProps>["onChange"]>((page, pageSize) => {
+    setParams((pre) => ({
+      ...pre,
+      current: pre.current == page ? 1 : page,
+      pageSize: pageSize,
+    }));
+  }, []);
 
   // 点击查询或重置按钮时调用，默认会回退到第一页
   const setRequestParams = (formParams: object) => {

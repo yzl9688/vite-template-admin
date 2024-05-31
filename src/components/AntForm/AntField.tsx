@@ -52,21 +52,13 @@ const RenderComponent: React.FC<Pick<IField, "component" | "options">> = memo(
   },
 );
 
-export const AntField: React.FC<IField> = ({
-  component,
-  name,
-  label,
-  required,
-  options,
-}) => {
+export const AntField: React.FC<IField> = ({ component, name, label, required, options }) => {
   return (
     <Form.Item
       name={name}
       label={label}
       required={required}
-      rules={
-        required ? [{ message: `${label}不能为空`, required: true }] : undefined
-      }>
+      rules={required ? [{ message: `${label}不能为空`, required: true }] : undefined}>
       <RenderComponent component={component} options={options} />
     </Form.Item>
   );

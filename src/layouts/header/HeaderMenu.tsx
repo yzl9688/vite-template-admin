@@ -5,16 +5,11 @@ import { Menu, MenuProps } from "antd";
 import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-const findTargetMenu: (
-  path: string,
-  menus: MenuItem[],
-) => MenuItem | undefined = (path, menus) => {
+const findTargetMenu: (path: string, menus: MenuItem[]) => MenuItem | undefined = (path, menus) => {
   const targetMenu = menus.find((item) => item.key == path);
 
   const findChildMenu: (menus: MenuItem[]) => MenuItem = (menus) => {
-    return menus[0].children?.length
-      ? findChildMenu(menus[0].children)
-      : menus[0];
+    return menus[0].children?.length ? findChildMenu(menus[0].children) : menus[0];
   };
 
   if (targetMenu && targetMenu.children?.length) {

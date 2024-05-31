@@ -3,7 +3,7 @@
 bun pretty-quick --pattern "**/*.*(js|jsx|ts|tsx)" --staged
 
 # 执行eslint校验
-bun lint
+bun lint:eslint
 
 # 执行typescript校验
 bun type:check

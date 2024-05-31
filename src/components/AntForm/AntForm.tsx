@@ -40,10 +40,7 @@ export const AntForm: React.FC<AntFormProps> = ({
 
   if ((fields || []).length) {
     return (
-      <Form
-        form={form}
-        layout={mode == "query" ? "inline" : "horizontal"}
-        {...args}>
+      <Form form={form} layout={mode == "query" ? "inline" : "horizontal"} {...args}>
         {fields?.map((item) => <AntField key={item.name} {...item} />)}
         {ActionBtns}
       </Form>
@@ -51,10 +48,7 @@ export const AntForm: React.FC<AntFormProps> = ({
   }
 
   return (
-    <Form
-      form={form}
-      layout={mode == "query" ? "inline" : "horizontal"}
-      {...args}>
+    <Form form={form} layout={mode == "query" ? "inline" : "horizontal"} {...args}>
       {children}
       {ActionBtns}
     </Form>

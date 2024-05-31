@@ -7,10 +7,7 @@ import DraggableColumn from "./DraggableColumn";
 import { SortableContext } from "@dnd-kit/sortable";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { cloneDeep, sortBy } from "lodash";
-import {
-  restrictToFirstScrollableAncestor,
-  restrictToVerticalAxis,
-} from "@dnd-kit/modifiers";
+import { restrictToFirstScrollableAncestor, restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { CheckboxProps } from "antd/lib";
 
 const PopoverContent: React.FC = () => {
@@ -55,9 +52,7 @@ const PopoverContent: React.FC = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over?.id && active.id !== over?.id) {
-      const oldIndex = sortedColumns.findIndex(
-        (item) => item.name == active.id,
-      );
+      const oldIndex = sortedColumns.findIndex((item) => item.name == active.id);
       const newIndex = sortedColumns.findIndex((item) => item.name == over.id);
 
       if (oldIndex == newIndex) return;
@@ -69,10 +64,7 @@ const PopoverContent: React.FC = () => {
     <div>
       <div className="flex items-center w-[300px] mb-4">
         <div className="flex-1">
-          <Checkbox
-            indeterminate={indeterminate}
-            checked={checkedAll}
-            onChange={handleChangeCheck}>
+          <Checkbox indeterminate={indeterminate} checked={checkedAll} onChange={handleChangeCheck}>
             {checkedAll ? "取消全部" : "选中全部"}
           </Checkbox>
         </div>

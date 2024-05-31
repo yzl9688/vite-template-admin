@@ -26,10 +26,7 @@ export const useThemeConifg = () => {
   }, [colorPrimary]);
 
   const antdProviderConfig: ThemeConfig = {
-    algorithm:
-      themeMode == ThemeEnum.LIGHT
-        ? theme.defaultAlgorithm
-        : theme.darkAlgorithm,
+    algorithm: themeMode == ThemeEnum.LIGHT ? theme.defaultAlgorithm : theme.darkAlgorithm,
     token: {
       colorPrimary: colorPrimary,
       colorBgLayout:
@@ -40,10 +37,7 @@ export const useThemeConifg = () => {
     components: {
       Layout: {
         headerHeight: themeConfig.headerHeight,
-        headerBg:
-          themeMode == ThemeEnum.LIGHT
-            ? "#fff"
-            : themeConfig.darkBackgroundColor,
+        headerBg: themeMode == ThemeEnum.LIGHT ? "#fff" : themeConfig.darkBackgroundColor,
         headerPadding: 0,
       },
     },

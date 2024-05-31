@@ -25,9 +25,7 @@ const staffHandlers = [
         });
       }
 
-      return HttpResponse.json<
-        ResponseData<{ list: unknown[]; total: number }>
-      >({
+      return HttpResponse.json<ResponseData<{ list: unknown[]; total: number }>>({
         code: 200,
         data: {
           list: res,

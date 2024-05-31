@@ -47,11 +47,7 @@ const createElement: (menu: IMenu) => React.ReactNode = (menu) => {
     return <div>未指定component属性</div>;
   }
 
-  return isString(menu.component) ? (
-    <CompWrapper path={menu.component} />
-  ) : (
-    menu.component
-  );
+  return isString(menu.component) ? <CompWrapper path={menu.component} /> : menu.component;
 };
 
 // 创建路由
@@ -85,10 +81,7 @@ const createRoute: (menu: IMenu) => React.ReactNode = (menu) => {
     <Route
       path={menu.path}
       element={
-        <ElementWrapper
-          title={menu.title || ""}
-          roles={menu.roles}
-          permissions={menu.permissions}>
+        <ElementWrapper title={menu.title || ""} roles={menu.roles} permissions={menu.permissions}>
           {element}
         </ElementWrapper>
       }
@@ -102,27 +95,18 @@ const createRoutes: (menus: IMenu[]) => React.ReactNode[] = (menus) => {
   const routes = menus.map((item: IMenu) => createRoute(item));
 
   const findChildMenu: (menus: IMenu[]) => IMenu = (menus) => {
-    return menus[0].children?.length
-      ? findChildMenu(menus[0].children)
-      : menus[0];
+    return menus[0].children?.length ? findChildMenu(menus[0].children) : menus[0];
   };
 
   menus.length &&
     routes.unshift(
-      <Route
-        index
-        element={<Navigate replace to={findChildMenu(menus).path} />}
-        key="redirect"
-      />,
+      <Route index element={<Navigate replace to={findChildMenu(menus).path} />} key="redirect" />,
     );
 
   return routes;
 };
 
-const AuthWrapper: React.FC<{ to: string; children: React.ReactNode }> = ({
-  to,
-  children,
-}) => {
+const AuthWrapper: React.FC<{ to: string; children: React.ReactNode }> = ({ to, children }) => {
   const token = useGlobalStore((state) => state.token);
 
   // 已登录情况不可访问登录页
@@ -141,10 +125,7 @@ const AuthWrapper: React.FC<{ to: string; children: React.ReactNode }> = ({
 const MenuRoutes: React.FC = () => {
   const remoteMenus = useGlobalStore((state) => state.menus);
 
-  const routes = useMemo(
-    () => createRoutes([...menus, ...remoteMenus]),
-    [remoteMenus],
-  );
+  const routes = useMemo(() => createRoutes([...menus, ...remoteMenus]), [remoteMenus]);
 
   return (
     <Routes>

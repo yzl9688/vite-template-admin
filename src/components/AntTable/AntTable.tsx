@@ -2,12 +2,7 @@ import { useAntTable } from "@/hooks/useAntTable";
 import { RequestParams } from "@/types";
 import { IField } from "@/types/form";
 import { Table, TableProps } from "antd";
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-} from "react";
+import React, { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 import { AntFormProps, AntForm } from "../AntForm";
 import { useColumns } from "./hooks/useColumns";
 import { Actions } from "./components/Actions";
@@ -37,20 +32,12 @@ export const InnerTable = forwardRef<ForwardProps, AntTableProps>(
   },
 );
 
-export const AntTable: React.FC<AntTableProps> = ({
-  requestParams,
-  columns,
-  fields,
-  ...args
-}) => {
+export const AntTable: React.FC<AntTableProps> = ({ requestParams, columns, fields, ...args }) => {
   const innerTableRef = useRef<ForwardProps>(null);
 
-  const handleChange: AntFormProps["onChange"] = useCallback(
-    (values: object) => {
-      innerTableRef.current?.setRequestParams(values);
-    },
-    [],
-  );
+  const handleChange: AntFormProps["onChange"] = useCallback((values: object) => {
+    innerTableRef.current?.setRequestParams(values);
+  }, []);
 
   return (
     <div>

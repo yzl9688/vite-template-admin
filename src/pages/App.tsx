@@ -28,9 +28,7 @@ const generateMenus: (menus: IMenu[]) => MenuItem[] = (menus) => {
         key: item.path,
         label: item.title,
         icon: isString(item.icon) ? <IconFont type={item.icon} /> : item.icon,
-        children: isArray(item.children)
-          ? generateMenus(item.children)
-          : undefined,
+        children: isArray(item.children) ? generateMenus(item.children) : undefined,
       };
     });
 };

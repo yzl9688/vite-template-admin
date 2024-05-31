@@ -10,7 +10,8 @@
     "test": "bunx --bun vite build --mode test",
     "staging": "bunx --bun vite build --mode staging",
     "build": "bunx --bun vite build",
-    "lint": "eslint src/**/*.{ts,tsx} --fix",
+    "lint:eslint": "eslint src/**/*.{ts,tsx} --fix",
+    "lint:prettier": "prettier . --write",
     "type:check": "tsc --noEmit --skipLibCheck --project ./tsconfig.json",
     "preview": "vite preview",
     "prepare": "husky"

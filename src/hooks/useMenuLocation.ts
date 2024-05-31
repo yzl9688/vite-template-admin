@@ -3,14 +3,12 @@ import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 
 // 查找一级菜单
-const findFirstLevelMenu: (
-  path: string,
-  menus: MenuItem[],
-) => MenuItem | undefined = (path, menus) => {
+const findFirstLevelMenu: (path: string, menus: MenuItem[]) => MenuItem | undefined = (
+  path,
+  menus,
+) => {
   const menu = menus.find(
-    (item) =>
-      path.indexOf(item?.key) == 0 &&
-      ["/", undefined].includes(path[item.key.length]),
+    (item) => path.indexOf(item?.key) == 0 && ["/", undefined].includes(path[item.key.length]),
   );
 
   return menu;

@@ -12,9 +12,7 @@ export const auth: Middleware = (useSWRNext: SWRHook) => {
     // 扩展fetcher
     const extendedFetcher = useCallback(
       (
-        args:
-          | string
-          | (Omit<RequestParams, "headers"> & { manualTrigger?: boolean }),
+        args: string | (Omit<RequestParams, "headers"> & { manualTrigger?: boolean }),
         { arg }: { arg?: object } = { arg: undefined },
       ) => {
         const params: RequestParams & { manualTrigger?: boolean } = {

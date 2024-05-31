@@ -14,10 +14,7 @@ export const swrConfig: SWRConfiguration = {
     if (retryCount >= (config?.errorRetryCount || 3)) return;
 
     // 5秒后重试
-    setTimeout(
-      () => revalidate({ retryCount: retryCount }),
-      config.errorRetryInterval || 5000,
-    );
+    setTimeout(() => revalidate({ retryCount: retryCount }), config.errorRetryInterval || 5000);
   },
   use: [auth],
 };

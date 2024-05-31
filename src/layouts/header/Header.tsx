@@ -30,9 +30,7 @@ const Header: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
         />
       )}
       <div className="flex-1">
-        {menuMode !== MenuModeEnum.LEFT && (
-          <HeaderMenu menus={menus} menuMode={menuMode} />
-        )}
+        {menuMode !== MenuModeEnum.LEFT && <HeaderMenu menus={menus} menuMode={menuMode} />}
       </div>
       <Actions />
     </Layout.Header>
