@@ -9,8 +9,8 @@ import React, {
   useRef,
 } from "react";
 import { AntFormProps, AntForm } from "../AntForm";
-import { SettingColumns } from "./components/SettingColumns";
 import { useColumns } from "./hooks/useColumns";
+import { Actions } from "./components/Actions";
 
 export interface AntTableProps extends TableProps {
   requestParams: RequestParams;
@@ -44,6 +44,7 @@ export const AntTable: React.FC<AntTableProps> = ({
   ...args
 }) => {
   const innerTableRef = useRef<ForwardProps>(null);
+
   const handleChange: AntFormProps["onChange"] = useCallback(
     (values: object) => {
       innerTableRef.current?.setRequestParams(values);
@@ -54,14 +55,14 @@ export const AntTable: React.FC<AntTableProps> = ({
   return (
     <div>
       {(fields || []).length && (
-        <div className="mb-4 pr-2 flex">
+        <div className="mb-4 pr-2 flex items-end">
           <AntForm
             className="flex-1"
             fields={fields}
             initialValues={requestParams.params}
             onChange={handleChange}
           />
-          <SettingColumns />
+          <Actions />
         </div>
       )}
       <InnerTable

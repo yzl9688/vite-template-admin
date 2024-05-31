@@ -1,6 +1,6 @@
 import { useTableStore } from "@/stores/table";
 import { SettingOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Popover } from "antd";
+import { Button, Checkbox, Popover, Tooltip } from "antd";
 import React, { useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import DraggableColumn from "./DraggableColumn";
@@ -119,7 +119,9 @@ export const SettingColumns: React.FC = () => {
       }}
       onOpenChange={handleOpenChange}
       content={<PopoverContent />}>
-      <SettingOutlined className="text-lg cursor-pointer hover:text-primary" />
+      <Tooltip title="列配置">
+        <SettingOutlined className="hover:text-primary" />
+      </Tooltip>
     </Popover>
   );
 };

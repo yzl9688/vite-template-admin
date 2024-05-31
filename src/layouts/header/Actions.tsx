@@ -4,13 +4,14 @@ import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown, MenuProps } from "antd";
 import { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import screenfull from "screenfull";
 import { IconWrapper } from "../styles/IconWrapper.styled";
+import { useFullScreen } from "@/hooks/useFullScreen";
 
 const Actions: React.FC = () => {
   const userInfo = useGlobalStore((state) => state.userInfo);
   const reset = useGlobalStore((state) => state.reset);
   const navigate = useNavigate();
+  const { isFullscreen, handleToggle } = useFullScreen();
 
   const items: MenuProps["items"] = [
     {
@@ -31,20 +32,10 @@ const Actions: React.FC = () => {
     [navigate],
   );
 
-  const handleToggle = useCallback(() => {
-    if (screenfull.isEnabled) {
-      screenfull.toggle();
-    }
-  }, []);
-
   return (
     <>
       <IconWrapper onClick={handleToggle}>
-        {screenfull.isFullscreen ? (
-          <FullscreenExitOutlined />
-        ) : (
-          <FullscreenOutlined />
-        )}
+        {isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
       </IconWrapper>
 
       <Dropdown

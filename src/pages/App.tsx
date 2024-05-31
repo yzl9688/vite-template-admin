@@ -1,7 +1,6 @@
 import { useGlobalStore } from "@/stores";
 import { Layout } from "antd";
 import React, { useMemo } from "react";
-import { Outlet } from "react-router-dom";
 import menus from "@/routes/config";
 import { IMenu } from "@/types/menu";
 import { isArray, isString } from "lodash";
@@ -11,6 +10,7 @@ import { useThemeStore } from "@/stores/theme";
 import { usePullMenus, usePullUserInfo } from "@/hooks/usePullData";
 import { MenuModeEnum } from "@/enums/appEnums";
 import IconFont from "@/components/IconFont";
+import Content from "@/layouts/content/Content";
 
 export type MenuItem = {
   key: string;
@@ -45,15 +45,6 @@ const App: React.FC = () => {
     return generateMenus([...menus, ...remoteMenus]);
   }, [remoteMenus]);
 
-  const Content = useMemo(
-    () => (
-      <Layout.Content className="m-[12px] rounded-s overflow-hidden overflow-y-auto">
-        <Outlet />
-      </Layout.Content>
-    ),
-    [],
-  );
-
   const HeaderMemo = useMemo(() => {
     return <Header menus={allMenus} />;
   }, [allMenus]);
@@ -68,7 +59,7 @@ const App: React.FC = () => {
         {SiderMemo}
         <Layout>
           {HeaderMemo}
-          {Content}
+          <Content />
         </Layout>
       </Layout>
     );
@@ -79,7 +70,7 @@ const App: React.FC = () => {
       {HeaderMemo}
       <Layout>
         {menuMode == MenuModeEnum.TOP_LEFT ? SiderMemo : null}
-        {Content}
+        <Content />
       </Layout>
     </Layout>
   );
