@@ -79,7 +79,7 @@ export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
   return (
     <SwitchTransition mode="out-in">
       <CSSTransition
-        key={location.pathname}
+        key={firstMenu?.key}
         nodeRef={nodeRef}
         timeout={300}
         classNames="fade"
