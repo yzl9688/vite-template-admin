@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Root from "./Root";
-import "./index.css";
+import "./styles/index.css";
 
 async function enableMocking() {
   if (import.meta.env.MODE !== "mock") return;

@@ -4,10 +4,12 @@ import { useGlobalStore } from "@/stores";
 import { useThemeStore } from "@/stores/theme";
 import { Layout, Menu, MenuProps } from "antd";
 import { isArray, uniq } from "lodash";
-import { useState, useEffect, useCallback, useMemo, memo } from "react";
+import { useState, useEffect, useCallback, useMemo, memo, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AppLogo from "../components/AppLogo";
 import { useMenuLocation } from "@/hooks/useMenuLocation";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
+import { Fade } from "@/styles/Fade.styled";
 
 // 获取当前菜单的父级菜单的key
 const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (path, menus) => {
@@ -71,27 +73,43 @@ export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
     setOpenedKeys(openedKeys);
   }, []);
 
-  if (!(_menus || []).length) return <></>;
+  const nodeRef = useRef(null);
+  // if (!(_menus || []).length) return <></>;
 
   return (
-    <Layout.Sider
-      className="h-full"
-      trigger={menuMode == MenuModeEnum.TOP_LEFT ? undefined : null}
-      theme="dark"
-      collapsible
-      onCollapse={handleMenuCollapseToggle}
-      collapsed={menuCollapsed}>
-      {menuMode == MenuModeEnum.LEFT && <AppLogo theme={ThemeEnum.DARK} />}
-      <Menu
-        mode="inline"
-        theme="dark"
-        items={_menus}
-        selectedKeys={[location.pathname]}
-        openKeys={openedKeys}
-        onClick={handleClick}
-        onOpenChange={handleOpenChange}
-      />
-    </Layout.Sider>
+    <SwitchTransition mode="out-in">
+      <CSSTransition
+        key={location.pathname}
+        nodeRef={nodeRef}
+        timeout={300}
+        classNames="fade"
+        appear={true}>
+        {!(_menus || []).length ? (
+          <></>
+        ) : (
+          <Fade ref={nodeRef} $onlyFadeIn>
+            <Layout.Sider
+              className="h-full"
+              trigger={menuMode == MenuModeEnum.TOP_LEFT ? undefined : null}
+              theme="dark"
+              collapsible
+              onCollapse={handleMenuCollapseToggle}
+              collapsed={menuCollapsed}>
+              {menuMode == MenuModeEnum.LEFT && <AppLogo theme={ThemeEnum.DARK} />}
+              <Menu
+                mode="inline"
+                theme="dark"
+                items={_menus}
+                selectedKeys={[location.pathname]}
+                openKeys={openedKeys}
+                onClick={handleClick}
+                onOpenChange={handleOpenChange}
+              />
+            </Layout.Sider>
+          </Fade>
+        )}
+      </CSSTransition>
+    </SwitchTransition>
   );
 };
 

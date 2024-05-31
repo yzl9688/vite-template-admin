@@ -36,7 +36,7 @@ export const BgContainer = styled.div`
   }
 `;
 
-export const LoginCard = styled.div`
+export const LoginCard = styled.div<{ $status: string }>`
   width: 300px;
   box-shadow: 0 25px 30px -13px rgba(40, 40, 40, 0.4);
   border-radius: 10px;
@@ -46,6 +46,9 @@ export const LoginCard = styled.div`
   margin-top: 300px;
   position: relative;
   z-index: 9;
+  transition: all 300ms ease-in;
+  opacity: ${(props) => (props.$status == "entered" ? 1 : 0)};
+  transform: ${(props) => (props.$status == "entered" ? "translateY(0px)" : "translateY(-100px)")};
 `;
 
 export const TopTitle = styled.h1`
