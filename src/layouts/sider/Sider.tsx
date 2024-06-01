@@ -74,7 +74,35 @@ export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
   }, []);
 
   const nodeRef = useRef(null);
-  // if (!(_menus || []).length) return <></>;
+
+  const InnerMenu = useMemo(() => {
+    if (!(_menus || []).length) return <></>;
+
+    return (
+      <Fade ref={nodeRef} $onlyFadeIn>
+        <Layout.Sider
+          className="h-full"
+          trigger={menuMode == MenuModeEnum.TOP_LEFT ? undefined : null}
+          theme="dark"
+          collapsible
+          onCollapse={handleMenuCollapseToggle}
+          collapsed={menuCollapsed}>
+          {menuMode == MenuModeEnum.LEFT && <AppLogo theme={ThemeEnum.DARK} />}
+          <Menu
+            mode="inline"
+            theme="dark"
+            items={_menus}
+            selectedKeys={[location.pathname]}
+            openKeys={openedKeys}
+            onClick={handleClick}
+            onOpenChange={handleOpenChange}
+          />
+        </Layout.Sider>
+      </Fade>
+    );
+  }, [_menus, menuMode, menuCollapsed, openedKeys, location]);
+
+  if (menuMode == MenuModeEnum.LEFT) return InnerMenu;
 
   return (
     <SwitchTransition mode="out-in">
@@ -84,30 +112,7 @@ export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
         timeout={300}
         classNames="fade"
         appear={true}>
-        {!(_menus || []).length ? (
-          <></>
-        ) : (
-          <Fade ref={nodeRef} $onlyFadeIn>
-            <Layout.Sider
-              className="h-full"
-              trigger={menuMode == MenuModeEnum.TOP_LEFT ? undefined : null}
-              theme="dark"
-              collapsible
-              onCollapse={handleMenuCollapseToggle}
-              collapsed={menuCollapsed}>
-              {menuMode == MenuModeEnum.LEFT && <AppLogo theme={ThemeEnum.DARK} />}
-              <Menu
-                mode="inline"
-                theme="dark"
-                items={_menus}
-                selectedKeys={[location.pathname]}
-                openKeys={openedKeys}
-                onClick={handleClick}
-                onOpenChange={handleOpenChange}
-              />
-            </Layout.Sider>
-          </Fade>
-        )}
+        {InnerMenu}
       </CSSTransition>
     </SwitchTransition>
   );
