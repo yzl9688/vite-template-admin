@@ -1,9 +1,9 @@
-import { MenuItem } from "@/pages/App";
+import { AntMenuItem } from "@/types";
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 
 // 查找一级菜单
-const findFirstLevelMenu: (path: string, menus: MenuItem[]) => MenuItem | undefined = (
+const findFirstLevelMenu: (path: string, menus: AntMenuItem[]) => AntMenuItem | undefined = (
   path,
   menus,
 ) => {
@@ -14,7 +14,7 @@ const findFirstLevelMenu: (path: string, menus: MenuItem[]) => MenuItem | undefi
   return menu;
 };
 
-export const useMenuLocation = (menus: MenuItem[]) => {
+export const useMenuLocation = (menus: AntMenuItem[]) => {
   const location = useLocation();
 
   const firstMenu = useMemo(() => {

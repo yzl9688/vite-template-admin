@@ -1,14 +1,17 @@
 import { MenuModeEnum } from "@/enums/appEnums";
 import { useMenuLocation } from "@/hooks/useMenuLocation";
-import { MenuItem } from "@/pages/App";
+import { AntMenuItem } from "@/types";
 import { Menu, MenuProps } from "antd";
 import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-const findTargetMenu: (path: string, menus: MenuItem[]) => MenuItem | undefined = (path, menus) => {
+const findTargetMenu: (path: string, menus: AntMenuItem[]) => AntMenuItem | undefined = (
+  path,
+  menus,
+) => {
   const targetMenu = menus.find((item) => item.key == path);
 
-  const findChildMenu: (menus: MenuItem[]) => MenuItem = (menus) => {
+  const findChildMenu: (menus: AntMenuItem[]) => AntMenuItem = (menus) => {
     return menus[0].children?.length ? findChildMenu(menus[0].children) : menus[0];
   };
 
@@ -19,7 +22,7 @@ const findTargetMenu: (path: string, menus: MenuItem[]) => MenuItem | undefined 
   return targetMenu;
 };
 
-const HeaderMenu: React.FC<{ menus: MenuItem[]; menuMode: MenuModeEnum }> = ({
+const HeaderMenu: React.FC<{ menus: AntMenuItem[]; menuMode: MenuModeEnum }> = ({
   menus,
   menuMode,
 }) => {

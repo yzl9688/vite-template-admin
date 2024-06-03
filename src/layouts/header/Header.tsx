@@ -3,13 +3,13 @@ import { useThemeStore } from "@/stores/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout } from "antd";
 import Actions from "./Actions";
-import { MenuItem } from "@/pages/App";
 import { memo, useCallback } from "react";
 import { MenuModeEnum } from "@/enums/appEnums";
 import AppLogo from "../components/AppLogo";
 import HeaderMenu from "./HeaderMenu.tsx";
+import { AntMenuItem } from "@/types/menu.ts";
 
-const Header: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
+const Header: React.FC<{ menus: AntMenuItem[] }> = ({ menus }) => {
   const menuCollapsed = useGlobalStore((state) => state.menuCollapsed);
   const setMenuCollapsed = useGlobalStore((state) => state.setMenuCollapsed);
   const menuMode = useThemeStore((state) => state.menuMode);

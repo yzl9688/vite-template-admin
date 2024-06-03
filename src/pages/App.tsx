@@ -2,7 +2,7 @@ import { useGlobalStore } from "@/stores";
 import { Layout } from "antd";
 import React, { useMemo } from "react";
 import menus from "@/routes/config";
-import { IMenu } from "@/types/menu";
+import { AntMenuItem, IMenu } from "@/types/menu";
 import { isArray, isString } from "lodash";
 import Header from "@/layouts/header/Header";
 import Sider from "@/layouts/sider/Sider";
@@ -12,15 +12,8 @@ import { MenuModeEnum } from "@/enums/appEnums";
 import IconFont from "@/components/IconFont";
 import Content from "@/layouts/content/Content";
 
-export type MenuItem = {
-  key: string;
-  label?: string;
-  icon?: React.ReactNode | string;
-  children?: MenuItem[];
-};
-
 // 生成菜单
-const generateMenus: (menus: IMenu[]) => MenuItem[] = (menus) => {
+const generateMenus: (menus: IMenu[]) => AntMenuItem[] = (menus) => {
   return menus
     .filter((item) => !item.hidden)
     .map((item) => {

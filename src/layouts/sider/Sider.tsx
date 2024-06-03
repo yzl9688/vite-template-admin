@@ -1,5 +1,4 @@
 import { MenuModeEnum, ThemeEnum } from "@/enums/appEnums";
-import { MenuItem } from "@/pages/App";
 import { useGlobalStore } from "@/stores";
 import { useThemeStore } from "@/stores/theme";
 import { Layout, Menu, MenuProps } from "antd";
@@ -10,9 +9,10 @@ import AppLogo from "../components/AppLogo";
 import { useMenuLocation } from "@/hooks/useMenuLocation";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import { Fade } from "@/styles/Fade.styled";
+import { AntMenuItem } from "@/types";
 
 // 获取当前菜单的父级菜单的key
-const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (path, menus) => {
+const findOpenedKeys: (path: string, menus: AntMenuItem[]) => string[] = (path, menus) => {
   for (let i = 0; i < menus.length; i++) {
     const currentMenu = menus[i];
 
@@ -27,7 +27,7 @@ const findOpenedKeys: (path: string, menus: MenuItem[]) => string[] = (path, men
   return [];
 };
 
-export const Sider: React.FC<{ menus: MenuItem[] }> = ({ menus }) => {
+export const Sider: React.FC<{ menus: AntMenuItem[] }> = ({ menus }) => {
   const menuCollapsed = useGlobalStore((state) => state.menuCollapsed);
   const setMenuCollapsed = useGlobalStore((state) => state.setMenuCollapsed);
   const menuMode = useThemeStore((state) => state.menuMode);

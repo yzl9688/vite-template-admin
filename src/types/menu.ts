@@ -39,3 +39,10 @@ export interface IMenu extends IMenuItem {
    */
   children?: IMenu[];
 }
+
+export type AntMenuItem = {
+  key: string;
+  label?: string;
+  icon?: React.ReactNode | string;
+  children?: AntMenuItem[];
+};
