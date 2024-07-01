@@ -64,16 +64,6 @@ const menus: IMenu[] = [
       },
     ],
   },
-  {
-    path: "/app/form",
-    title: "表单组件",
-    component: <div>form</div>,
-  },
-  {
-    path: "/app/form1",
-    title: "表单组件1",
-    component: <div>form1</div>,
-  },
 ];
 
 export default menus;

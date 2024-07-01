@@ -25,7 +25,9 @@ const Content: React.FC = () => {
           timeout={300}
           classNames="fade"
           appear={true}>
-          <Fade ref={nodeRef}>{outlet}</Fade>
+          <Fade ref={nodeRef} className="h-full">
+            {outlet}
+          </Fade>
         </CSSTransition>
       </SwitchTransition>
     </Layout.Content>
